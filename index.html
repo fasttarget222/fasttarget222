@@ -542,7 +542,6 @@ async function apiFetch(url, opts, timeoutMs){
   } finally { clearTimeout(id); }
 }
 let wakeToastEl = null;
-function showWaking(){ if(!wakeToastEl) wakeToastEl = toast('Connecting to the server… (it may be waking up, please wait)', 'info'); }
 function clearWaking(){ if(wakeToastEl){ wakeToastEl.click(); wakeToastEl = null; } }
 
 /* ============================================================
