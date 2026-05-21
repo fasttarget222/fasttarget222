@@ -6,17 +6,17 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-// آپ کی گوگل شیٹ کا ڈیٹا بیس انجن لنک
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbz_9e7q17F81D_wWw7BvIclP0I53y7iX_H_8N3N/exec";
+// SheetDB کا فاسٹ کلاؤڈ لنک
+const SHEETDB_URL = "https://sheetdb.io/api/v1/rdfg2xphgdnl1";
 
 app.post('/api/vendors/register', async (req, res) => {
     try {
-        // ڈیٹا سیدھا گوگل شیٹ کو بھیجیں
-        await axios.post(GOOGLE_SHEET_URL, req.body);
+        // ڈیٹا کو فارمیٹ کر کے سیدھا شیٹ ڈی بی کو بھیجیں
+        await axios.post(SHEETDB_URL, { data: [req.body] });
         return res.status(201).json({ success: true });
     } catch (err) {
-        // بیک اپ اگر شیٹ پبلک نہ ہو
-        return res.status(201).json({ success: true, backup: true });
+        console.error(err);
+        return res.status(500).json({ error: "Database engine backup fail" });
     }
 });
 
@@ -25,6 +25,3 @@ app.get('/api/vendors/stats', (req, res) => {
 });
 
 module.exports = app;
-
-# فرنٹ اینڈ کو انٹرنل روٹ پر مستقل لاک کریں
-sed -i "s|const SERVER_URL = '.*';|const SERVER_URL = '';|g" index.html
