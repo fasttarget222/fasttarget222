@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: abbottabad-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: MONGO_URI
+        value: mongodb+srv://fasttarget222:AliYar1992@cluster0.v9wux.mongodb.net/abbottabad?retryWrites=true&w=majority
