@@ -70,13 +70,14 @@
             btn.innerText = "Submitting...";
             btn.disabled = true;
 
+            // گوگل شیٹ کے کالمز کے عین مطابق نام (Lowercase)
             const payload = {
-                "Full Name": document.getElementById('name').value,
-                "Phone Number": document.getElementById('phone').value,
-                "Experience": document.getElementById('experience').value || "N/A",
-                "Address": document.getElementById('address').value,
-                "Service Category": document.getElementById('category').value,
-                "Description": document.getElementById('description').value || "N/A"
+                "name": document.getElementById('name').value,
+                "phone": document.getElementById('phone').value,
+                "experience": document.getElementById('experience').value || "N/A",
+                "address": document.getElementById('address').value,
+                "category": document.getElementById('category').value,
+                "description": document.getElementById('description').value || "N/A"
             };
 
             try {
@@ -88,14 +89,14 @@
 
                 if (response.ok) {
                     msg.innerText = "🎉 Registration Successful!";
-                    msg.className = "text-emerald-400 bg-emerald-950/50 border border-emerald-500/30 text-center text-sm font-bold mt-4 p-2 rounded-lg";
+                    msg.className = "text-emerald-400 bg-emerald-950/50 border border-emerald-500/30 text-center text-sm font-bold mt-4 p-2 rounded-lg block";
                     document.getElementById('regForm').reset();
                 } else {
                     throw new Error("Cloud backup error");
                 }
             } catch (err) {
                 msg.innerText = "⚠️ Submission Failed. Try Again.";
-                msg.className = "text-rose-400 bg-rose-950/50 border border-rose-500/30 text-center text-sm font-bold mt-4 p-2 rounded-lg";
+                msg.className = "text-rose-400 bg-rose-950/50 border border-rose-500/30 text-center text-sm font-bold mt-4 p-2 rounded-lg block";
             } finally {
                 btn.innerText = "🚀 Register Now";
                 btn.disabled = false;
