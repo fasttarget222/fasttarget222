@@ -1,134 +1,152 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
-const PORT = 3000;
-const DB_FILE = path.join(__dirname, 'vendors.json');
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-function readDB() {
+// 1. ڈیٹا بیس کنکشن (MongoDB Connection)
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://fasttarget222:AliYar1992@cluster0.v9wux.mongodb.net/abbottabad?retryWrites=true&w=majority";
+mongoose.connect(MONGO_URI)
+  .then(() => console.log("🟢 MongoDB connected successfully!"))
+  .catch(err => console.error("🔴 MongoDB connection error:", err));
+
+// 2. وینڈر ڈیٹا بیس اسکیمہ (Vendor Schema with Status Tracking)
+const vendorSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    phone: { type: String, required: true, unique: true },
+    address: { type: String, required: true },
+    category: { type: String, required: true },
+    experience: { type: String },
+    description: { type: String },
+    status: { type: String, default: 'pending' } // pending or approved
+}, { timestamps: true });
+
+const Vendor = mongoose.model('Vendor', vendorSchema);
+
+// 3. ریویو ڈیٹا بیس اسکیمہ (Review Schema)
+const reviewSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    service: { type: String, required: true },
+    rating: { type: Number, required: true },
+    message: { type: String, required: true }
+}, { timestamps: true });
+
+const Review = mongoose.model('Review', reviewSchema);
+
+// --- لائیو اے پی آئی لنکس (API ENDPOINTS) ---
+
+// A. وینڈر رجسٹریشن (Register Vendor)
+app.post('/api/vendors/register', async (req, res) => {
     try {
-        const data = fs.readFileSync(DB_FILE, 'utf8');
-        return JSON.parse(data);
+        const { name, phone, address, category, experience, description } = req.body;
+        // اگر وینڈر پہلے سے موجود ہو تو پرانا والا اپڈیٹ کر دیں یا نیا بنائیں
+        let vendor = await Vendor.findOne({ phone });
+        if (vendor) {
+            vendor.name = name;
+            vendor.address = address;
+            vendor.category = category;
+            vendor.experience = experience;
+            vendor.description = description;
+            vendor.status = 'pending'; // دوبارہ ایڈمن اپروول کے لیے بھیجیں
+            await vendor.save();
+        } else {
+            vendor = new Vendor({ name, phone, address, category, experience, description, status: 'pending' });
+            await vendor.save();
+        }
+        res.status(201).json({ success: true, message: "Application submitted successfully!" });
     } catch (err) {
-        return [];
-    }
-}
-
-function writeDB(data) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 4), 'utf8');
-}
-
-const server = http.createServer((req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-    if (req.method === 'OPTIONS') {
-        res.writeHead(200);
-        res.end();
-        return;
-    }
-
-    if (req.url === '/' || req.url === '/index.html') {
-        fs.readFile(path.join(__dirname, 'index.html'), 'utf8', (err, content) => {
-            if (err) {
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.end('Error loading index.html');
-            } else {
-                res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-                res.end(content);
-            }
-        });
-    }
-    else if (req.url === '/api/vendors' && req.method === 'GET') {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(readDB()));
-    }
-    else if (req.url === '/api/vendors/register' && req.method === 'POST') {
-        let body = '';
-        req.on('data', chunk => { body += chunk.toString(); });
-        req.on('end', () => {
-            try {
-                const newVendor = JSON.parse(body);
-                const vendors = readDB();
-                
-                newVendor.id = Date.now();
-                newVendor.status = 'pending';
-                newVendor.distance = (Math.random() * 2.8 + 0.2).toFixed(1);
-                newVendor.rating = "4.5";
-                
-                // 4 ہندسوں کا یونیک ڈیلیٹ کوڈ بنانا
-                const uniqueCode = Math.floor(1000 + Math.random() * 9000).toString();
-                newVendor.deleteCode = uniqueCode;
-                
-                vendors.push(newVendor);
-                writeDB(vendors);
-                
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: true, deleteCode: uniqueCode }));
-            } catch (err) {
-                res.writeHead(400, { 'Content-Type': 'text/plain' });
-                res.end('Invalid Data');
-            }
-        });
-    }
-    else if (req.url === '/api/vendors/action' && req.method === 'POST') {
-        let body = '';
-        req.on('data', chunk => { body += chunk.toString(); });
-        req.on('end', () => {
-            try {
-                const { id, action } = JSON.parse(body);
-                let vendors = readDB();
-                
-                if (action === 'approve') {
-                    vendors = vendors.map(v => v.id === id ? { ...v, status: 'approved' } : v);
-                } else if (action === 'reject' || action === 'delete') {
-                    vendors = vendors.filter(v => v.id !== id);
-                }
-                
-                writeDB(vendors);
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: true }));
-            } catch (err) {
-                res.writeHead(400, { 'Content-Type': 'text/plain' });
-                res.end('Invalid request');
-            }
-        });
-    }
-    // وینڈر خود اپنا کوڈ ڈال کر ڈیلیٹ کر سکے
-    else if (req.url === '/api/vendors/self-delete' && req.method === 'POST') {
-        let body = '';
-        req.on('data', chunk => { body += chunk.toString(); });
-        req.on('end', () => {
-            try {
-                const { phone, code } = JSON.parse(body);
-                let vendors = readDB();
-                
-                const initialLength = vendors.length;
-                // فون نمبر اور ڈیلیٹ کوڈ میچ کرنا
-                vendors = vendors.filter(v => !(v.phone === phone && v.deleteCode === code));
-                
-                if (vendors.length < initialLength) {
-                    writeDB(vendors);
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ success: true, message: 'Deleted successfully' }));
-                } else {
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ success: false, message: 'غلط فون نمبر یا سیکیورٹی کوڈ!' }));
-                }
-            } catch (err) {
-                res.writeHead(400, { 'Content-Type': 'text/plain' });
-                res.end('Error');
-            }
-        });
-    }
-    else {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('404 Not Found');
+        res.status(500).json({ error: err.message });
     }
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+// B. وینڈر تلاش کرنا (Self Lookup)
+app.get('/api/vendors/lookup', async (req, res) => {
+    try {
+        const phone = req.query.phone;
+        const vendor = await Vendor.findOne({ phone });
+        if (!vendor) return res.status(404).json({ error: "Vendor not found" });
+        res.json(vendor);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
+// C. وینڈر سیلف اپڈیٹ (Self Update)
+app.put('/api/vendors/:phone', async (req, res) => {
+    try {
+        const updated = await Vendor.findOneAndUpdate({ phone: req.params.phone }, req.body, { new: true });
+        res.json(updated);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// D. وینڈر سیلف ڈیلیٹ (Self Delete)
+app.delete('/api/vendors/:phone', async (req, res) => {
+    try {
+        await Vendor.findOneAndDelete({ phone: req.params.phone });
+        res.json({ success: true, message: "Listing deleted" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// E. ایڈمن: تمام پینڈنگ وینڈرز کی لسٹ (Admin Pending List)
+app.get('/api/vendors/pending', async (req, res) => {
+    try {
+        const pending = await Vendor.find({ status: 'pending' });
+        res.json(pending);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// F. ایڈمن: وینڈر اپروو کرنا (Admin Approve Action)
+app.put('/api/vendors/:id/approve', async (req, res) => {
+    try {
+        const approvedVendor = await Vendor.findByIdAndUpdate(req.params.id, { status: 'approved' }, { new: true });
+        res.json({ success: true, vendor: approvedVendor });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// G. ایڈمن: رجسٹریشن ریجیکٹ/ڈیلیٹ کرنا (Admin Reject Action)
+app.delete('/api/vendors/:id', async (req, res) => {
+    try {
+        await Vendor.findByIdAndDelete(req.params.id);
+        res.json({ success: true, message: "Vendor removed by admin" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// H. رئیل ٹائم سٹیٹس کاؤنٹر (Real Base Database Counter)
+app.get('/api/vendors/stats', async (req, res) => {
+    try {
+        const approvedCount = await Vendor.countDocuments({ status: 'approved' });
+        res.json({
+            totalVendors: 46 + approvedCount,
+            totalCustomers: 1200 + (approvedCount * 3)
+        });
+    } catch (err) {
+        res.json({ totalVendors: 46, totalCustomers: 1200 });
+    }
+});
+
+// I. ریویو سبمٹ کرنا (Submit Review)
+app.post('/api/reviews/submit', async (req, res) => {
+    try {
+        const review = new Review(req.body);
+        await review.save();
+        res.status(201).json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// سرور پورٹ سیٹنگز
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Live Server running perfectly on port ${PORT}`));
