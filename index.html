@@ -465,18 +465,18 @@ footer{border-top:1px solid var(--line-soft);padding:56px 0 90px;margin-top:30px
 /* ============================================================
    CONFIG + API ENDPOINTS
 ============================================================ */
-const SERVER_URL = '';
+const SERVER_URL = 'https://abbottabad-backend.onrender.com';
 const ADMIN_PASSWORD = 'AliYar@1992';
 const API = {
-  stats:    function()      { return '/api/vendors/stats'; },
-  register: function()      { return '/api/vendors/register'; },
-  lookup:   function(phone) { return '/api/vendors/lookup?phone=' + encodeURIComponent(phone); },
-  update:   function(phone) { return '/api/vendors/' + encodeURIComponent(phone); },   // PUT
-  remove:   function(phone) { return '/api/vendors/' + encodeURIComponent(phone); },   // DELETE
-  pending:  function()      { return '/api/vendors/pending'; },
-  approve:  function(id)    { return '/api/vendors/' + encodeURIComponent(id) + '/approve'; }, // PUT
-  reject:   function(id)    { return '/api/vendors/' + encodeURIComponent(id); },       // DELETE
-  reviews:  function()      { return '/api/reviews/submit'; }
+  stats:    function()      { return SERVER_URL + '/api/vendors/stats'; },
+  register: function()      { return SERVER_URL + '/api/vendors/register'; },
+  lookup:   function(phone) { return SERVER_URL + '/api/vendors/lookup?phone=' + encodeURIComponent(phone); },
+  update:   function(phone) { return SERVER_URL + '/api/vendors/' + encodeURIComponent(phone); },   // PUT
+  remove:   function(phone) { return SERVER_URL + '/api/vendors/' + encodeURIComponent(phone); },   // DELETE
+  pending:  function()      { return SERVER_URL + '/api/vendors/pending'; },
+  approve:  function(id)    { return SERVER_URL + '/api/vendors/' + encodeURIComponent(id) + '/approve'; }, // PUT
+  reject:   function(id)    { return SERVER_URL + '/api/vendors/' + encodeURIComponent(id); },       // DELETE
+  reviews:  function()      { return SERVER_URL + '/api/reviews/submit'; }
 };
 
 /* ============================================================
