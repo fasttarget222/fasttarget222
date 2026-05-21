@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abbottabad Prime Portal - World's Best Local Services Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Amiri:wght@400;700&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #00d9ff;
+            --secondary: #8b5cf6;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --dark: #0a0f1e;
+            --darker: #050810;
+            --card-glass: rgba(15, 23, 42, 0.8);
+            --border-glow: rgba(0, 217, 255, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+        }
+
+        /* All Original Background & Particle Animations Rebuilt */
+        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px var(--border-glow); } 50% { box-shadow: 0 0 40px rgba(0, 217, 255, 0.6); } }
+        @keyframes particle-float { 0% { transform: translate(0, 0) scale(1); opacity: 0; } 50% { opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
+        @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        @keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); opacity: 1; } }
+
+        body {
+            font-family: 'Tajawal', 'Almarai', sans-serif;
+            background: var(--darker);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Neon Ambient Floating System Elements */
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; pointer-events: none; }
+        .gradient-orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; animation: float 20s infinite ease-in-out; }
+        .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, #667eea 0%, transparent 70%); top: -10%; right: -10%; }
+        .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, #f093fb 0%, transparent 70%); bottom: -10%; left: -10%; animation-delay: 3s; }
+        .orb-3 { width: 350px; height: 350px; background: radial-gradient(circle, #4facfe 0%, transparent 70%); top: 50%; left: 50%; animation-delay: 6s; }
+
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .particle { position: absolute; width: 4px; height: 4px; background: var(--primary); border-radius: 50%; animation: particle-float 15s infinite; opacity: 0; }
+
+        .container { max-width: 480px; margin: 0 auto; padding: 20px; position: relative; z-index: 2; }
+
+        .portal-intro-hero {
+            background: var(--card-glass);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(0, 217, 255, 0.15);
+            animation: slideInUp 0.6s ease;
+        }
+        .portal-intro-hero h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--primary), #fff, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .portal-intro-hero p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 15px; }
+        .live-location-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: #14b8a6; padding: 6px 14px; border-radius: 50px; font-size: 11px; font-weight: 700; }
+        .pulse-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse-glow 1.5s infinite; }
+
+        .vendor-action-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; animation: slideInUp 0.7s ease; }
+        .vendor-banner { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); }
+        .vendor-banner h3 { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+        .register-vendor-btn { background: white; color: #667eea; padding: 10px 20px; border: none; border-radius: 30px; font-weight: 800; font-size: 13px; cursor: pointer; width: 100%; }
+
+        .vendor-delete-banner { background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%); border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 10px 30px rgba(244, 63, 94, 0.3); }
+        .vendor-delete-banner h3 { font-size: 16px; font-weight: 800; margin-bottom: 8px; color: white; }
+        .delete-vendor-btn { background: white; color: #e11d48; padding: 10px 20px; border: none; border-radius: 30px; font-weight: 800; font-size: 13px; cursor: pointer; width: 100%; }
+
+        .header { background: var(--card-glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px; padding: 20px; margin-bottom: 25px; position: relative; animation: slideInUp 0.6s ease; }
+        .logo { width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; animation: pulse-glow 2s infinite; }
+        .title-section h1 { font-family: 'Amiri', serif; font-size: 22px; font-weight: 800; background: linear-gradient(135deg, var(--primary) 0%, #fff 50%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .title-section p { font-size: 10px; color: var(--text-secondary); margin-top: 5px; letter-spacing: 1.5px; }
+
+        .search-container { position: relative; margin-bottom: 25px; animation: slideInUp 0.8s ease; }
+        .search-bar { width: 100%; padding: 18px 55px 18px 20px; background: var(--card-glass); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50px; color: var(--text-primary); font-size: 15px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 25px; animation: slideInUp 0.9s ease; }
+        .stat-card { background: var(--card-glass); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 15px 10px; text-align: center; }
+        .stat-number { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-label { font-size: 10px; color: var(--text-secondary); margin-top: 5px; }
+
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
+        .service-card { background: var(--card-glass); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 25px 15px; text-align: center; cursor: pointer; position: relative; overflow: hidden; transition: all 0.4s ease; animation: scaleIn 0.5s ease; }
+        .service-card:hover { transform: translateY(-8px) scale(1.03); border-color: var(--primary); box-shadow: 0 15px 40px rgba(0, 217, 255, 0.25); }
+        .service-icon { font-size: 64px; margin-bottom: 12px; animation: float 4s infinite ease-in-out; }
+        .service-title { font-size: 17px; font-weight: 700; margin-bottom: 5px; }
+        .service-count { font-size: 11px; color: var(--text-secondary); }
+        .new-badge { position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #ff00ff, #ff0080); padding: 4px 10px; border-radius: 20px; font-size: 9px; font-weight: 800; animation: pulse-glow 2s infinite; }
+        .trending-badge { position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #f59e0b, #f97316); padding: 4px 10px; border-radius: 20px; font-size: 9px; font-weight: 800; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 8, 16, 0.95); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal.active { display: flex; animation: fadeIn 0.3s ease; }
+        .modal-content { background: var(--card-glass); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px; max-width: 440px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 30px; position: relative; animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes modalSlideIn { from { opacity: 0; transform: translateY(-40px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .modal-title { font-size: 20px; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 12px; }
+        .close-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+        .close-btn:hover { background: rgba(255,0,0,0.2); color:#ff6b6b; transform: rotate(90deg); }
+
+        .subcategory-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .subcategory-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 18px 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+        .subcategory-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 217, 255, 0.15); }
+        .subcategory-icon { font-size: 42px; margin-bottom: 8px; }
+        .subcategory-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+
+        .input-field, .textarea-field { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 15px; color: var(--text-primary); font-size: 14px; width: 100%; margin-bottom: 15px; font-family: 'Tajawal', sans-serif; }
+        .input-field option { background: #0a0f1e; color: #fff; }
+
+        .intercity-box { background: rgba(0, 217, 255, 0.05); border: 1px dashed var(--primary); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .intercity-title { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+
+        .provider-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; margin-bottom: 15px; transition: all 0.3s ease; }
+        .provider-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .distance-badge { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; }
+        .rating-stars { color: #fbbf24; font-size: 14px; margin: 5px 0; }
+        .contact-btn { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 12px 20px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; font-family: 'Tajawal', sans-serif; transition: all 0.3s ease; }
+        .contact-btn:hover { box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); }
+
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 15px; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; font-size: 16px; }
+        .btn-danger { background: linear-gradient(135deg, #f43f5e, #e11d48); color: white; padding: 15px; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; font-size: 16px; }
+
+        .approve-btn { background: linear-gradient(135deg, var(--success), #059669); color: white; padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; margin: 5px; }
+        .reject-btn { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; margin: 5px; }
+        .pending-badge { background: #ef4444; color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+        .approved-badge { background: #10b981; color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+
+        .footer { text-align: center; padding: 25px; margin-top: 30px; background: var(--card-glass); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; }
+        .footer-contact { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .contact-item { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--primary); font-size: 14px; font-weight: 600; }
+        .contact-item a { color: var(--primary); text-decoration: none; }
+        .footer-text { color: var(--text-secondary); font-size: 12px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+
+        .secret-admin-trigger { position: fixed; bottom: 10px; left: 10px; width: 35px; height: 35px; opacity: 0.02; cursor: pointer; z-index: 999; background: white; }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .services-grid { grid-template-columns: 1fr; }
+            .subcategory-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+    <div class="particles" id="particles"></div>
+    <div class="secret-admin-trigger" onclick="openModal('adminPanel')"></div>
+
+    <div class="container">
+        <div class="portal-intro-hero">
+            <h2>ایبٹ آباد پرائم پورٹل</h2>
+            <p>ایبٹ آباد کا سب سے بڑا ڈیجیٹل سروسز پلیٹ فارم۔ اب میڈیکل اسپیشلسٹس، ٹیکنیشنز، پراپرٹی، ہوم ٹیوٹرز، کار شیئرنگ اور بکس ایکسچینج جیسی تمام سہولیات ایک ہی جگہ پر لائیو لوکیشن اور فوری تصدیق کے ساتھ دستیاب ہیں۔</p>
+            <div class="live-location-badge">
+                <div class="pulse-dot"></div>
+                <span id="locationStatus">صارف کی لوکیشن تلاش کی جا رہی ہے... Detecting Live Location...</span>
+            </div>
+        </div>
+
+        <div class="vendor-action-container">
+            <div class="vendor-banner">
+                <h3>🌟 سروس فراہم کریں</h3>
+                <button class="register-vendor-btn" onclick="openModal('vendorRegister')">رجسٹر کریں</button>
+            </div>
+            <div class="vendor-delete-banner">
+                <h3>❌ اینٹری ڈیلیٹ کریں</h3>
+                <button class="delete-vendor-btn" onclick="openModal('vendorSelfDelete')">پروفائل ہٹائیں</button>
+            </div>
+        </div>
+
+        <div class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">🏔️</div>
+                    <div class="title-section">
+                        <h1>ABBOTTABAD PRIME PORTAL</h1>
+                        <p>WORLD'S BEST LOCAL SERVICES</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="🔍 تلاش کریں... Search Services, Vendors, Areas" id="searchInput" oninput="filterCards()">
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-number" id="vCount">45+</div><div class="stat-label">Vendors</div></div>
+            <div class="stat-card"><div class="stat-number">1200+</div><div class="stat-label">Customers</div></div>
+            <div class="stat-card"><div class="stat-number">4.9★</div><div class="stat-label">Rating</div></div>
+            <div class="stat-card"><div class="stat-number">24/7</div><div class="stat-label">Support</div></div>
+        </div>
+
+        <div class="services-grid" id="mainServicesGrid">
+            <div class="service-card" onclick="openModal('doctors')">
+                <div class="trending-badge">🔥 Popular</div>
+                <div class="service-icon">👨‍⚕️</div>
+                <div class="service-title">Doctors</div>
+                <div class="service-count">All Specializations</div>
+            </div>
+
+            <div class="service-card" onclick="openModal('technicians')">
+                <div class="service-icon">🔧</div>
+                <div class="service-title">Technicians</div>
+                <div class="service-count">Technical Experts</div>
+            </div>
+
+            <div class="service-card" onclick="openModal('property')">
+                <div class="service-icon">🏠</div>
+                <div class="service-title">Property Hub</div>
+                <div class="service-count">Buy, Rent, Commercial</div>
+            </div>
+
+            <div class="service-card" onclick="openModal('tutors')">
+                <div class="service-icon">🎓</div>
+                <div class="service-title">Tutors Hub</div>
+                <div class="service-count">Home & Online</div>
+            </div>
+
+            <div class="service-card" onclick="openModal('sawar')">
+                <div class="new-badge">NEW</div>
+                <div class="service-icon">🚗</div>
+                <div class="service-title">Sawar & Swari</div>
+                <div class="service-count">Rides & Intercity</div>
+            </div>
+
+            <div class="service-card" onclick="openModal('books')">
+                <div class="service-icon">📚</div>
+                <div class="service-title">Books Hub</div>
+                <div class="service-count">Sale & Exchange</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-contact">
+                <div class="contact-item"><i class="fab fa-whatsapp"></i><a href="https://wa.me/923174886655" target="_blank">+92 317 4886655</a></div>
+                <div class="contact-item"><i class="fas fa-envelope"></i><a href="mailto:Fasttarget222@gmail.com">Fasttarget222@gmail.com</a></div>
+            </div>
+            <div class="footer-text">
+                © 2026 Abbottabad Prime Portal. World's Best Local Services Platform.
+            </div>
+        </div>
+    </div>
+
+    <div id="doctorsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><span>👨‍⚕️</span><span>Medical Specialists</span></div>
+                <button class="close-btn" onclick="closeModal('doctorsModal')">&times;</button>
+            </div>
+            <div class="subcategory-grid">
+                <div class="subcategory-card" onclick="showNearestProviders('doc-gp')"><div class="subcategory-icon">🩺</div><div class="subcategory-title">General Physician</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('doc-ent')"><div class="subcategory-icon">👂</div><div class="subcategory-title">ENT Specialist</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('doc-cardio')"><div class="subcategory-icon">❤️</div><div class="subcategory-title">Cardiologist</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('doc-peds')"><div class="subcategory-icon">👶</div><div class="subcategory-title">Pediatrician</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('doc-ortho')"><div class="subcategory-icon">🦴</div><div class="subcategory-title">Orthopedic Surgeon</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('doc-gynae')"><div class="subcategory-icon">🤰</div><div class="subcategory-title">Gynecologist</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="techniciansModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><span>🔧</span><span>Technical Services</span></div>
+                <button class="close-btn" onclick="closeModal('techniciansModal')">&times;</button>
+            </div>
+            <div class="subcategory-grid">
+                <div class="subcategory-card" onclick="openModal('electrician')"><div class="subcategory-icon">⚡</div><div class="subcategory-title">Electrician Options</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('plumber')"><div class="subcategory-icon">🚰</div><div class="subcategory-title">Plumber</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('ac')"><div class="subcategory-icon">❄️</div><div class="subcategory-title">AC / Fridge Repair</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('carpenter')"><div class="subcategory-icon">🪚</div><div class="subcategory-title">Carpenter</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('painter')"><div class="subcategory-icon">🎨</div><div class="subcategory-title">Painter</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('mechanic')"><div class="subcategory-icon">🚗</div><div class="subcategory-title">Auto Mechanic</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="electricianModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><span>⚡</span><span>Electrician Options</span></div>
+                <button class="close-btn" onclick="closeModal('electricianModal')">&times;</button>
+            </div>
+            <div class="subcategory-grid">
+                <div class="subcategory-card" onclick="showNearestProviders('elec-solar')"><div class="subcategory-icon">☀️</div><div class="subcategory-title">Solar Panel Setup</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('elec-wiring')"><div class="subcategory-icon">🏠</div><div class="subcategory-title">House Wiring</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('elec-ups')"><div class="subcategory-icon">🔋</div><div class="subcategory-title">UPS & Battery</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="propertyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><span>🏠</span><span>Property Hub</span></div>
+                <button class="close-btn" onclick="closeModal('propertyModal')">&times;</button>
+            </div>
+            <div class="subcategory-grid">
+                <div class="subcategory-card" onclick="showNearestProviders('prop-rent-house')"><div class="subcategory-icon">🔑</div><div class="subcategory-title">House for Rent</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('prop-sale-house')"><div class="subcategory-icon">💰</div><div class="subcategory-title">House for Sale</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('prop-plots')"><div class="subcategory-icon">📐</div><div class="subcategory-title">Plots & Land</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tutorsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><span>🎓</span><span>Academic Tutors</span></div>
+                <button class="close-btn" onclick="closeModal('tutorsModal')">&times;</button>
+            </div>
+            <div class="subcategory-grid">
+                <div class="subcategory-card" onclick="showNearestProviders('tut-matric')"><div class="subcategory-icon">📝</div><div class="subcategory-title">Matric / FSc</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('tut-alevel')"><div class="subcategory-icon">🇬🇧</div><div class="subcategory-title">O / A Levels</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('tut-quran')"><div class="subcategory-icon">📖</div><div class="subcategory-title">Quran & Arabic</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sawarModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><span>🚗</span><span>Sawar & Swari Dashboard</span></div>
+                <button class="close-btn" onclick="closeModal('sawarModal')">&times;</button>
+            </div>
+            <div class="subcategory-grid" style="margin-bottom: 20px;">
+                <div class="subcategory-card" onclick="showNearestProviders('ride-bike')"><div class="subcategory-icon">🏍️</div><div class="subcategory-title">Local Bike Ride</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('ride-rent')"><div class="subcategory-icon">🔑</div><div class="subcategory-title">Rent A Car</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('ride-delivery')"><div class="subcategory-icon">📦</div><div class="subcategory-title">Instant Delivery</div></div>
+            </div>
+            
+            <div class="intercity-box">
+                <div class="intercity-title"><i class="fas fa-route"></i> انٹر سٹی کار شیئرنگ (Intercity Car Share)</div>
+                <div class="subcategory-grid">
+                    <div class="subcategory-card" onclick="showNearestProviders('ride-share-out')" style="background: rgba(139, 92, 246, 0.1); border-color: var(--secondary);">
+                        <div class="subcategory-icon">🛫</div>
+                        <div class="subcategory-title" style="font-size:12px;">Abbottabad to Intercity</div>
+                    </div>
+                    <div class="subcategory-card" onclick="showNearestProviders('ride-share-in')" style="background: rgba(139, 92, 246, 0.1); border-color: var(--secondary);">
+                        <div class="subcategory-icon">🛬</div>
+                        <div class="subcategory-title" style="font-size:12px;">Intercity to Abbottabad</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="booksModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><span>📚</span><span>Books Hub</span></div>
+                <button class="close-btn" onclick="closeModal('booksModal')">&times;</button>
+            </div>
+            <div class="subcategory-grid">
+                <div class="subcategory-card" onclick="showNearestProviders('book-sale')"><div class="subcategory-icon">🏷️</div><div class="subcategory-title">Books for Sale</div></div>
+                <div class="subcategory-card" onclick="showNearestProviders('book-exchange')"><div class="subcategory-icon">🔄</div><div class="subcategory-title">Book Exchange</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="providersModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><span>📍</span><span id="providersTitle">ماہرین لسٹ</span></div>
+                <button class="close-btn" onclick="closeModal('providersModal')">&times;</button>
+            </div>
+            <div id="providersList"></div>
+        </div>
+    </div>
+
+    <div id="vendorRegisterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><span>📝</span><span>Vendor Registration</span></div>
+                <button class="close-btn" onclick="closeModal('vendorRegisterModal')">&times;</button>
+            </div>
+            <input type="text" class="input-field" placeholder="👤 نام - Full Name" id="vendorName">
+            <input type="tel" class="input-field" placeholder="📞 فون نمبر - Phone Number" id="vendorPhone">
+            <input type="text" class="input-field" placeholder="📍 پتہ - Address (e.g. Mandian)" id="vendorAddress">
+            
+            <select class="input-field" id="vendorCategory" onchange="handleCategoryChange(this.value)">
+                <option value="">خدمت کی قسم منتخب کریں - Select Category</option>
+                <optgroup label="Car Share & Intercity Routes">
+                    <option value="ride-share-out">🚗 Intercity Ride: Abbottabad to Other City</option>
+                    <option value="ride-share-in">🚗 Intercity Ride: Other City to Abbottabad</option>
+                    <option value="ride-bike">🏍️ Bike Ride Share Provider</option>
+                    <option value="ride-rent">🔑 Rent-A-Car Agency</option>
+                    <option value="ride-delivery">📦 Local Delivery Courier</option>
+                </optgroup>
+                <optgroup label="Other Categories">
+                    <option value="doc-gp">🩺 General Physician</option>
+                    <option value="doc-ent">👂 ENT Specialist</option>
+                    <option value="plumber">🚰 Plumber Experts</option>
+                    <option value="ac">❄️ AC Repair</option>
+                    <option value="tut-matric">📝 Matric Teacher</option>
+                    <option value="book-exchange">🔄 Book Exchange Member</option>
+                </optgroup>
+            </select>
+
+            <div id="dynamicRouteBox" style="display:none;" class="intercity-box">
+                <input type="text" class="input-field" placeholder="🏙️ شہر کا نام لکھیں - Target City Name" id="vendorTargetCity" style="margin-bottom:0;">
+            </div>
+
+            <div id="dynamicTimeBox" style="display:none;" class="intercity-box">
+                <div class="intercity-title"><i class="fas fa-clock"></i> اویلیبلٹی ٹائم اور تاریخ (Availability Slot)</div>
+                <input type="date" class="input-field" id="vendorDate">
+                <input type="time" class="input-field" id="vendorTime" style="margin-bottom:0;">
+            </div>
+
+            <input type="number" class="input-field" placeholder="⭐ تجربہ / گاڑی کا ماڈل - Experience / Car Model Year" id="vendorExperience">
+            <textarea class="textarea-field" placeholder="📝 تفصیل - Description / Available Seats" id="vendorDescription" rows="3"></textarea>
+            
+            <button class="btn-primary" onclick="submitVendorRegistration()">رجسٹر کریں - Submit</button>
+        </div>
+    </div>
+
+    <div id="vendorSelfDeleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><span>❌</span><span>Delete Your Profile</span></div>
+                <button class="close-btn" onclick="closeModal('vendorSelfDeleteModal')">&times;</button>
+            </div>
+            <p style="font-size:12px; color:var(--text-secondary); margin-bottom:15px; text-align:center;">رجسٹریشن کے وقت ملا ہوا 4 ہندسوں کا خفیہ سیکیورٹی کوڈ درج کر کے اپنی پروفائل فوری ہٹائیں!</p>
+            <input type="tel" class="input-field" placeholder="📞 اپنا رجسٹرڈ فون نمبر" id="selfDeletePhone">
+            <input type="number" class="input-field" placeholder="🔑 4 ہندسوں کا خفیہ کوڈ (Delete Code)" id="selfDeleteCode">
+            <button class="btn-danger" onclick="submitSelfDelete()">مستقل ڈیلیٹ کریں - Delete Now</button>
+        </div>
+    </div>
+
+    <div id="adminPanelModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <div class="modal-title"><span>🔐</span><span>Admin Control Board</span></div>
+                <button class="close-btn" onclick="closeModal('adminPanelModal')">&times;</button>
+            </div>
+            
+            <div id="adminLogin">
+                <input type="password" class="input-field" placeholder="🔑 Enter Admin Password" id="adminPassword">
+                <button class="btn-primary" onclick="verifyAdminLogin()">Login Dashboard</button>
+            </div>
+
+            <div id="adminDashboard" style="display: none;">
+                <h3 style="color: var(--accent); margin-bottom: 10px;">
+                    <i class="fas fa-clock"></i> نئے فارمز (Pending Approval) <span class="pending-badge" id="pendingCount">0</span>
+                </h3>
+                <div id="pendingVendorsList" style="max-height: 25vh; overflow-y: auto; margin-bottom:20px;"></div>
+
+                <h3 style="color: var(--success); margin-bottom: 10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">
+                    <i class="fas fa-check-circle"></i> لائیو ماہرین (Live Approved Vendors)
+                </h3>
+                <div id="approvedVendorsManagementList" style="max-height: 30vh; overflow-y: auto;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate Particles Dynamically via JS Back Online
+        function spawnParticles() {
+            const container = document.getElementById('particles');
+            if(!container) return;
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                p.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                p.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+                p.style.animationDelay = Math.random() * 15 + 's';
+                container.appendChild(p);
+            }
+        }
+        spawnParticles();
+
+        const SERVER_URL = window.location.origin;
+        const ADMIN_PASS_KEY = 'AliYar@1992';
+        let allServerVendors = [];
+        let userLatitude = 34.1688, userLongitude = 73.2215;
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(p => {
+                userLatitude = p.coords.latitude; userLongitude = p.coords.longitude;
+                document.getElementById('locationStatus').textContent = `✅ Live GPS Active Connected`;
+            }, e => {
+                document.getElementById('locationStatus').textContent = "📍 GPS Active (Abbottabad City Base)";
+            });
+        }
+
+        function calculateRealDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            return (R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))).toFixed(1);
+        }
+
+        function handleCategoryChange(val) {
+            document.getElementById('dynamicRouteBox').style.display = (val=='ride-share-out' || val=='ride-share-in') ? 'block' : 'none';
+            document.getElementById('dynamicTimeBox').style.display = val.startsWith('ride-') ? 'block' : 'none';
+        }
+
+        async function fetchVendorsFromServer() {
+            try {
+                const response = await fetch(`${SERVER_URL}/api/vendors`);
+                allServerVendors = await response.json();
+                
+                const approved = allServerVendors.filter(v => v.status === 'approved').length;
+                document.getElementById('vCount').textContent = (approved + 45) + "+";
+                document.getElementById('pendingCount').textContent = allServerVendors.filter(v => v.status === 'pending').length;
+            } catch (err) { console.error(err); }
+        }
+        fetchVendorsFromServer(); setInterval(fetchVendorsFromServer, 4000);
+
+        function openModal(id) { document.getElementById(id + 'Modal').classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        async function submitVendorRegistration() {
+            const payload = {
+                name: document.getElementById('vendorName').value.trim(),
+                phone: document.getElementById('vendorPhone').value.trim(),
+                address: document.getElementById('vendorAddress').value.trim(),
+                category: document.getElementById('vendorCategory').value,
+                targetCity: document.getElementById('vendorTargetCity').value.trim() || '',
+                availDate: document.getElementById('vendorDate').value || '',
+                availTime: document.getElementById('vendorTime').value || '',
+                experience: document.getElementById('vendorExperience').value,
+                description: document.getElementById('vendorDescription').value.trim(),
+                lat: userLatitude + (Math.random() - 0.5) * 0.04,
+                lon: userLongitude + (Math.random() - 0.5) * 0.04
+            };
+
+            if (!payload.name || !payload.phone || !payload.category || !payload.address) {
+                alert('براہ کرم لازمی خانے پر کریں!'); return;
+            }
+
+            try {
+                const res = await fetch(`${SERVER_URL}/api/vendors/register`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert(`✅ فارم جمع ہو گیا ہے!\n\n⚠️ آپ کا خفیہ ڈیلیشن کوڈ یہ ہے: ${data.deleteCode}\nاس کوڈ کو یاد رکھیں، اپنی پروفائل ہٹانے کے لیے یہ کوڈ لازمی ہے!`);
+                    closeModal('vendorRegisterModal');
+                    fetchVendorsFromServer();
+                }
+            } catch (err) { alert('سرور کنکشن فیل!'); }
+        }
+
+        async function submitSelfDelete() {
+            const payload = {
+                phone: document.getElementById('selfDeletePhone').value.trim(),
+                code: document.getElementById('selfDeleteCode').value.trim()
+            };
+            if(!payload.phone || !payload.code) { alert('دونوں خانے پر کریں!'); return; }
+
+            try {
+                const res = await fetch(`${SERVER_URL}/api/vendors/self-delete`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                alert(data.success ? '✅ آپ کی پروفائل کامیابی سے ڈیلیٹ ہو گئی ہے!' : '❌ ' + data.message);
+                if(data.success) { closeModal('vendorSelfDeleteModal'); fetchVendorsFromServer(); }
+            } catch (err) { alert('Error!'); }
+        }
+
+        function showNearestProviders(categoryKey) {
+            const matches = allServerVendors.filter(v => v.category === categoryKey && v.status === 'approved');
+            const container = document.getElementById('providersList');
+            document.getElementById('providersTitle').textContent = `📍 Profiles Found`;
+
+            if (matches.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding:30px; color:var(--text-secondary);">کوئی پروفائل دستیاب نہیں ہے!</p>';
+            } else {
+                container.innerHTML = matches.map(p => {
+                    const dist = calculateRealDistance(userLatitude, userLongitude, p.lat, p.lon);
+                    
+                    let metaInfoHtml = '';
+                    if (p.category.startsWith('ride-')) {
+                        metaInfoHtml = `
+                            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.2); padding:8px; border-radius:8px; margin:8px 0; font-size:12px; color:var(--accent);">
+                                ${p.targetCity ? `<b>➔ روٹ:</b> ایبٹ آباد سے ${p.targetCity}<br>` : ''}
+                                ${p.availDate ? `<b>📅 تاریخ:</b> ${p.availDate}<br>` : ''}
+                                ${p.availTime ? `<b>⏰ ٹائم:</b> ${p.availTime}` : ''}
+                            </div>`;
+                    }
+
+                    return `
+                        <div class="provider-card">
+                            <div style="display:flex; justify-content:space-between; align-items:start;">
+                                <div>
+                                    <h3 style="color:var(--primary); font-size:19px;">${p.name}</h3>
+                                    <div class="rating-stars">★★★★★</div>
+                                </div>
+                                <span class="distance-badge">📍 ${dist} km</span>
+                            </div>
+                            ${metaInfoHtml}
+                            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6; margin-top:5px;">
+                                <b>فون:</b> ${p.phone}<br><b>پتہ:</b> ${p.address}<br><b>تفصیل:</b> ${p.description || 'کوئی تفصیل نہیں'}
+                            </p>
+                            <button class="contact-btn" onclick="window.location.href='tel:${p.phone}'"><i class="fas fa-phone-alt"></i> رابطہ کریں</button>
+                        </div>`;
+                }).join('');
+            }
+            openModal('providers');
+        }
+
+        function verifyAdminLogin() {
+            if (document.getElementById('adminPassword').value === ADMIN_PASS_KEY) {
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                renderAdminDashboardLists();
+            } else { alert('غلط پاس ورڈ!'); }
+        }
+
+        function renderAdminDashboardLists() {
+            const pending = allServerVendors.filter(v => v.status === 'pending');
+            const pContainer = document.getElementById('pendingVendorsList');
+            pContainer.innerHTML = pending.length === 0 ? '<p style="color:var(--text-secondary); font-size:12px;">کوئی نیا فارم نہیں ہے</p>' : pending.map(v => `
+                <div class="provider-card" style="padding:10px; border-color:var(--accent);">
+                    <h5 style="color:var(--accent);">${v.name} (${v.category})</h5>
+                    <div style="display:flex; gap:10px; margin-top:8px;">
+                        <button class="approve-btn" onclick="dispatchAdminAction(${v.id}, 'approve')">منظور کریں</button>
+                        <button class="reject-btn" onclick="dispatchAdminAction(${v.id}, 'reject')">مسترد</button>
+                    </div>
+                </div>`).join('');
+
+            const approved = allServerVendors.filter(v => v.status === 'approved');
+            const aContainer = document.getElementById('approvedVendorsManagementList');
+            aContainer.innerHTML = approved.length === 0 ? '<p style="color:var(--text-secondary); font-size:12px;">کوئی لائیو ممبر نہیں ہے</p>' : approved.map(v => `
+                <div class="provider-card" style="padding:12px; border-color:var(--success); display:flex; justify-content:between; align-items:center;">
+                    <div style="flex:1;">
+                        <span class="approved-badge">${v.category}</span>
+                        <h4 style="color:#fff; margin-top:5px;">${v.name}</h4>
+                        <small style="color:var(--text-secondary);">📞 ${v.phone} | 🔑 Code: ${v.deleteCode || 'N/A'}</small>
+                    </div>
+                    <button class="reject-btn" style="padding:6px 12px; font-size:11px;" onclick="dispatchAdminAction(${v.id}, 'delete')"><i class="fas fa-trash"></i> ہٹائیں</button>
+                </div>`).join('');
+        }
+
+        async function dispatchAdminAction(id, actionType) {
+            try {
+                await fetch(`${SERVER_URL}/api/vendors/action`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, action: actionType })
+                });
+                await fetchVendorsFromServer(); renderAdminDashboardLists();
+            } catch (err) { alert('Error!'); }
+        }
+
+        function filterCards() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('#mainServicesGrid .service-card').forEach(card => {
+                card.style.display = card.querySelector('.service-title').textContent.toLowerCase().includes(query) ? 'block' : 'none';
+            });
+        }
+
+        document.querySelectorAll('.modal').forEach(m => {
+            m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
+        });
+    </script>
+</body>
+</html>
+
