@@ -1,682 +1,997 @@
 <!DOCTYPE html>
-<html lang="ur" dir="rtl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abbottabad Prime Portal - World's Best Local Services Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Amiri:wght@400;700&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Abbottabad Prime Portal — World's Best Local Services. Rides, medical specialists, home services, property, education and more." />
+<title>Abbottabad Prime Portal — World's Best Local Services</title>
 
-        :root {
-            --primary: #00d9ff;
-            --secondary: #8b5cf6;
-            --accent: #f59e0b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --dark: #0a0f1e;
-            --darker: #050810;
-            --card-glass: rgba(15, 23, 42, 0.8);
-            --border-glow: rgba(0, 217, 255, 0.3);
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-        /* All Original Background & Particle Animations Rebuilt */
-        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px var(--border-glow); } 50% { box-shadow: 0 0 40px rgba(0, 217, 255, 0.6); } }
-        @keyframes particle-float { 0% { transform: translate(0, 0) scale(1); opacity: 0; } 50% { opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
-        @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-        @keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); opacity: 1; } }
+<style>
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+:root{
+  --bg:#0b0f19; --bg-2:#0d1322;
+  --surface:rgba(18,24,38,0.72); --surface-solid:#121826;
+  --line:rgba(0,242,254,0.14); --line-soft:rgba(255,255,255,0.06);
+  --cyan:#00f2fe; --blue:#2b6fff; --green:#1aff8c;
+  --txt:#eaf2ff; --txt-dim:#9fb0cc; --txt-faint:#6b7a99;
+  --red:#ff5d6c;
+  --glow-cyan:0 0 15px rgba(0,242,254,0.20);
+  --glow-cyan-strong:0 0 28px rgba(0,242,254,0.45);
+  --glow-green:0 0 18px rgba(26,255,140,0.30);
+  --grad:linear-gradient(110deg,var(--cyan),var(--blue) 45%,var(--green));
+  --radius:18px; --radius-sm:12px; --shell:1180px;
+  --ease:cubic-bezier(.16,.84,.44,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;overflow-x:hidden;min-height:100vh;position:relative}
 
-        body {
-            font-family: 'Tajawal', 'Almarai', sans-serif;
-            background: var(--darker);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+/* ATMOSPHERE */
+.bg-fx{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;will-change:transform}
+.blob.b1{width:46vw;height:46vw;background:radial-gradient(circle,rgba(0,242,254,.55),transparent 65%);top:-12vw;left:-8vw;animation:drift 22s var(--ease) infinite alternate}
+.blob.b2{width:40vw;height:40vw;background:radial-gradient(circle,rgba(43,111,255,.5),transparent 65%);bottom:-14vw;right:-6vw;animation:drift 26s var(--ease) infinite alternate-reverse}
+.blob.b3{width:34vw;height:34vw;background:radial-gradient(circle,rgba(26,255,140,.32),transparent 65%);top:42%;left:38%;animation:drift 30s var(--ease) infinite alternate}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(6vw,5vw) scale(1.18)}}
+.grid-fx{position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(0,242,254,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,242,254,.05) 1px,transparent 1px);background-size:54px 54px;mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,#000 30%,transparent 80%)}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.035;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-        /* Neon Ambient Floating System Elements */
-        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; pointer-events: none; }
-        .gradient-orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; animation: float 20s infinite ease-in-out; }
-        .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, #667eea 0%, transparent 70%); top: -10%; right: -10%; }
-        .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, #f093fb 0%, transparent 70%); bottom: -10%; left: -10%; animation-delay: 3s; }
-        .orb-3 { width: 350px; height: 350px; background: radial-gradient(circle, #4facfe 0%, transparent 70%); top: 50%; left: 50%; animation-delay: 6s; }
+/* LAYOUT */
+.shell{width:100%;max-width:var(--shell);margin-inline:auto;padding-inline:20px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+section{position:relative;padding:74px 0}
+.eyebrow{font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;font-weight:600}
+.sec-head{max-width:660px;margin-bottom:42px}
+.sec-head h2{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,4.5vw,2.5rem);font-weight:800;line-height:1.1;letter-spacing:-.5px}
+.sec-head p{color:var(--txt-dim);margin-top:14px;font-size:1.02rem}
 
-        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .particle { position: absolute; width: 4px; height: 4px; background: var(--primary); border-radius: 50%; animation: particle-float 15s infinite; opacity: 0; }
+/* NAVBAR */
+header.nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:rgba(11,15,25,.55);border-bottom:1px solid var(--line-soft)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Orbitron',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:.5px;text-decoration:none;color:inherit}
+.brand .mark{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--grad);color:#04121f;font-size:1.15rem;font-weight:900;box-shadow:var(--glow-cyan-strong)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a,.nav-links button.linklike{color:var(--txt-dim);text-decoration:none;font-weight:600;font-size:.94rem;transition:color .25s;background:none;border:0;cursor:pointer;font-family:inherit}
+.nav-links a:hover,.nav-links button.linklike:hover{color:var(--cyan)}
+.menu-toggle{display:none;background:none;border:0;color:var(--txt);font-size:1.6rem;cursor:pointer;line-height:1}
 
-        .container { max-width: 480px; margin: 0 auto; padding: 20px; position: relative; z-index: 2; }
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:9px;cursor:pointer;border:0;font-family:'Manrope',sans-serif;font-weight:700;font-size:.95rem;padding:13px 24px;border-radius:13px;text-decoration:none;color:#04121f;background:var(--grad);background-size:160% 160%;box-shadow:var(--glow-cyan);transition:transform .25s var(--ease),box-shadow .3s,background-position .6s}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--glow-cyan-strong);background-position:100% 0}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line);box-shadow:none}
+.btn.ghost:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:var(--glow-cyan)}
+.btn.danger{background:linear-gradient(120deg,#ff5d6c,#c81e3a);color:#fff;box-shadow:0 0 16px rgba(255,93,108,.3)}
+.btn.ok{background:linear-gradient(120deg,#1aff8c,#08b85f);color:#04190d}
+.btn.sm{padding:9px 16px;font-size:.85rem;border-radius:10px}
 
-        .portal-intro-hero {
-            background: var(--card-glass);
-            border: 1px solid rgba(0, 217, 255, 0.2);
-            border-radius: 25px;
-            padding: 25px;
-            margin-bottom: 25px;
-            text-align: center;
-            box-shadow: 0 0 25px rgba(0, 217, 255, 0.15);
-            animation: slideInUp 0.6s ease;
-        }
-        .portal-intro-hero h2 {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, var(--primary), #fff, var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .portal-intro-hero p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 15px; }
-        .live-location-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: #14b8a6; padding: 6px 14px; border-radius: 50px; font-size: 11px; font-weight: 700; }
-        .pulse-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse-glow 1.5s infinite; }
+/* HERO */
+.hero{padding:54px 0 64px;text-align:center}
+.gps-badge{display:inline-flex;align-items:center;gap:9px;padding:9px 20px;border-radius:999px;font-weight:600;font-size:.86rem;border:1px solid var(--line);background:rgba(18,24,38,.6);box-shadow:var(--glow-cyan);margin-bottom:30px;letter-spacing:.02em;transition:all .4s var(--ease)}
+.gps-badge.live{border-color:rgba(26,255,140,.5);color:var(--green);box-shadow:var(--glow-green)}
+.gps-badge.denied{border-color:rgba(255,80,80,.45);color:#ff8a8a;background:rgba(60,16,16,.5);box-shadow:0 0 18px rgba(255,60,60,.22)}
+.gps-dot{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.35)}}
+.hero h1{font-family:'Orbitron',sans-serif;font-weight:900;line-height:1.02;font-size:clamp(2.4rem,8.5vw,5.4rem);letter-spacing:-1px;filter:drop-shadow(0 0 24px rgba(0,242,254,.35))}
+.hero .sub{font-family:'Orbitron',sans-serif;letter-spacing:.42em;text-transform:uppercase;font-size:clamp(.66rem,2.4vw,.95rem);color:var(--txt-dim);margin-top:18px;font-weight:500}
+.hero .lead{max-width:580px;margin:22px auto 0;color:var(--txt-dim);font-size:1.05rem}
 
-        .vendor-action-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; animation: slideInUp 0.7s ease; }
-        .vendor-banner { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); }
-        .vendor-banner h3 { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
-        .register-vendor-btn { background: white; color: #667eea; padding: 10px 20px; border: none; border-radius: 30px; font-weight: 800; font-size: 13px; cursor: pointer; width: 100%; }
+/* SEARCH */
+.search-wrap{max-width:620px;margin:34px auto 0}
+.search{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 20px;border-radius:16px;border:1px solid var(--line);background:rgba(13,19,34,.75);box-shadow:var(--glow-cyan);transition:border-color .3s,box-shadow .3s}
+.search:focus-within{border-color:var(--cyan);box-shadow:var(--glow-cyan-strong)}
+.search .ico{font-size:1.1rem;color:var(--cyan)}
+.search input{flex:1;background:transparent;border:0;outline:0;color:var(--txt);font-size:1rem;font-family:inherit;padding:11px 0}
+.search input::placeholder{color:var(--txt-faint)}
+.search .btn{padding:12px 22px}
+.search-note{margin-top:14px;color:var(--txt-faint);font-size:.88rem;min-height:1.2em}
 
-        .vendor-delete-banner { background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%); border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 10px 30px rgba(244, 63, 94, 0.3); }
-        .vendor-delete-banner h3 { font-size: 16px; font-weight: 800; margin-bottom: 8px; color: white; }
-        .delete-vendor-btn { background: white; color: #e11d48; padding: 10px 20px; border: none; border-radius: 30px; font-weight: 800; font-size: 13px; cursor: pointer; width: 100%; }
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
+.stat{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(10px);padding:24px 18px;text-align:center;transition:transform .35s var(--ease),border-color .3s,box-shadow .3s}
+.stat:hover{transform:translateY(-6px);border-color:var(--cyan);box-shadow:var(--glow-cyan)}
+.stat .num{font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,4vw,2.1rem);font-weight:800;line-height:1}
+.stat .lbl{margin-top:9px;color:var(--txt-dim);font-size:.84rem;font-weight:600;letter-spacing:.04em}
 
-        .header { background: var(--card-glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px; padding: 20px; margin-bottom: 25px; position: relative; animation: slideInUp 0.6s ease; }
-        .logo { width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; animation: pulse-glow 2s infinite; }
-        .title-section h1 { font-family: 'Amiri', serif; font-size: 22px; font-weight: 800; background: linear-gradient(135deg, var(--primary) 0%, #fff 50%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .title-section p { font-size: 10px; color: var(--text-secondary); margin-top: 5px; letter-spacing: 1.5px; }
+/* SERVICE CARDS */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{position:relative;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(10px);padding:28px 22px;overflow:hidden;transition:transform .4s var(--ease),border-color .3s,box-shadow .4s}
+.card::after{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+.card:hover{transform:translateY(-8px);border-color:var(--cyan);box-shadow:var(--glow-cyan-strong)}
+.card:hover::after{transform:scaleX(1)}
+.card .emoji{font-size:2rem;width:60px;height:60px;border-radius:16px;display:grid;place-items:center;background:rgba(0,242,254,.08);border:1px solid var(--line);margin-bottom:16px;box-shadow:var(--glow-cyan)}
+.card h3{font-size:1.12rem;font-weight:800;letter-spacing:-.2px}
+.card .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.chip{font-size:.74rem;font-weight:600;color:var(--txt-dim);background:rgba(11,15,25,.55);border:1px solid var(--line-soft);border-radius:999px;padding:5px 10px;transition:all .25s}
+.card:hover .chip{border-color:var(--line)}
+.card.is-hidden{display:none}
 
-        .search-container { position: relative; margin-bottom: 25px; animation: slideInUp 0.8s ease; }
-        .search-bar { width: 100%; padding: 18px 55px 18px 20px; background: var(--card-glass); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50px; color: var(--text-primary); font-size: 15px; }
+/* REVIEWS */
+.reviews-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:start}
+.rolling{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(10px);padding:34px;min-height:280px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--glow-cyan);position:relative;overflow:hidden}
+.rolling .quote-mark{font-family:'Orbitron',sans-serif;font-size:4rem;line-height:.6;color:rgba(0,242,254,.18);height:30px}
+.review-card{transition:opacity .5s,transform .5s}
+.review-card.fade{opacity:0;transform:translateY(10px)}
+.review-card .stars-out{color:var(--green);letter-spacing:3px;font-size:1.15rem;margin-bottom:10px;text-shadow:var(--glow-green)}
+.review-card .text{font-size:1.1rem;line-height:1.6;color:var(--txt);font-weight:500}
+.review-card .who{margin-top:18px;display:flex;align-items:center;gap:12px}
+.review-card .who .av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--grad);color:#04121f;font-weight:800;font-family:'Orbitron',sans-serif}
+.review-card .who .meta b{display:block;font-size:.96rem}
+.review-card .who .meta span{font-size:.82rem;color:var(--txt-faint)}
+.dots{display:flex;gap:8px;margin-top:24px}
+.dots button{width:9px;height:9px;border-radius:50%;border:0;background:rgba(255,255,255,.18);cursor:pointer;padding:0;transition:all .3s}
+.dots button.on{width:26px;border-radius:5px;background:var(--grad);box-shadow:var(--glow-cyan)}
 
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 25px; animation: slideInUp 0.9s ease; }
-        .stat-card { background: var(--card-glass); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 15px 10px; text-align: center; }
-        .stat-number { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .stat-label { font-size: 10px; color: var(--text-secondary); margin-top: 5px; }
+/* FORMS */
+.form-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(10px);padding:30px;box-shadow:var(--glow-cyan)}
+.form-card h3{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:6px}
+.form-card .hint{color:var(--txt-dim);font-size:.9rem;margin-bottom:22px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.82rem;font-weight:700;color:var(--txt-dim);margin-bottom:7px;letter-spacing:.03em}
+.field input,.field select,.field textarea{width:100%;background:rgba(11,15,25,.7);border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--txt);font-family:inherit;font-size:.96rem;padding:13px 15px;outline:0;transition:border-color .25s,box-shadow .25s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan);box-shadow:var(--glow-cyan)}
+.field input[readonly]{opacity:.7;cursor:not-allowed}
+.field textarea{resize:vertical;min-height:90px}
+.field select option{background:#0d1322;color:var(--txt)}
+.field select optgroup{background:#0d1322;color:var(--cyan);font-family:'Orbitron',sans-serif}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.star-pick{display:flex;gap:8px;font-size:1.7rem;cursor:pointer;user-select:none}
+.star-pick span{color:rgba(255,255,255,.2);transition:transform .15s,color .2s,text-shadow .2s}
+.star-pick span:hover{transform:scale(1.18)}
+.star-pick span.lit{color:var(--green);text-shadow:var(--glow-green)}
+.form-card .btn{width:100%;justify-content:center;margin-top:6px}
 
-        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
-        .service-card { background: var(--card-glass); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 25px 15px; text-align: center; cursor: pointer; position: relative; overflow: hidden; transition: all 0.4s ease; animation: scaleIn 0.5s ease; }
-        .service-card:hover { transform: translateY(-8px) scale(1.03); border-color: var(--primary); box-shadow: 0 15px 40px rgba(0, 217, 255, 0.25); }
-        .service-icon { font-size: 64px; margin-bottom: 12px; animation: float 4s infinite ease-in-out; }
-        .service-title { font-size: 17px; font-weight: 700; margin-bottom: 5px; }
-        .service-count { font-size: 11px; color: var(--text-secondary); }
-        .new-badge { position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #ff00ff, #ff0080); padding: 4px 10px; border-radius: 20px; font-size: 9px; font-weight: 800; animation: pulse-glow 2s infinite; }
-        .trending-badge { position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #f59e0b, #f97316); padding: 4px 10px; border-radius: 20px; font-size: 9px; font-weight: 800; }
+/* VENDOR CTA */
+.vendor-cta{border:1px solid var(--line);border-radius:24px;overflow:hidden;position:relative;background:radial-gradient(circle at 15% 20%,rgba(0,242,254,.16),transparent 45%),radial-gradient(circle at 85% 90%,rgba(26,255,140,.14),transparent 45%),rgba(13,19,34,.78);padding:54px 40px;text-align:center;box-shadow:var(--glow-cyan)}
+.vendor-cta h2{font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,4.5vw,2.3rem);font-weight:800;line-height:1.12}
+.vendor-cta p{max-width:580px;margin:16px auto 28px;color:var(--txt-dim);font-size:1.04rem}
+.cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.vendor-perks{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:30px}
+.perk{font-size:.84rem;font-weight:600;color:var(--txt-dim);border:1px solid var(--line);border-radius:999px;padding:8px 16px;background:rgba(11,15,25,.5)}
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 8, 16, 0.95); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .modal.active { display: flex; animation: fadeIn 0.3s ease; }
-        .modal-content { background: var(--card-glass); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px; max-width: 440px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 30px; position: relative; animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes modalSlideIn { from { opacity: 0; transform: translateY(-40px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        .modal-title { font-size: 20px; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 12px; }
-        .close-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
-        .close-btn:hover { background: rgba(255,0,0,0.2); color:#ff6b6b; transform: rotate(90deg); }
+/* MODAL */
+.overlay{position:fixed;inset:0;z-index:90;display:none;background:rgba(4,8,16,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:24px;overflow-y:auto}
+.overlay.open{display:flex;align-items:flex-start;justify-content:center}
+.modal{width:100%;max-width:580px;margin:auto;position:relative;background:var(--surface-solid);border:1px solid var(--line);border-radius:22px;padding:34px;box-shadow:var(--glow-cyan-strong);animation:rise .4s var(--ease)}
+@keyframes rise{from{opacity:0;transform:translateY(26px) scale(.97)}to{opacity:1;transform:none}}
+.modal .x{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--txt);font-size:1.2rem;cursor:pointer;display:grid;place-items:center;transition:all .25s;z-index:2}
+.modal .x:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:var(--glow-cyan)}
+.modal h3{font-family:'Orbitron',sans-serif;font-size:1.22rem;font-weight:700;padding-right:40px}
+.modal .hint{color:var(--txt-dim);font-size:.9rem;margin:8px 0 22px}
 
-        .subcategory-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .subcategory-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 18px 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
-        .subcategory-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 217, 255, 0.15); }
-        .subcategory-icon { font-size: 42px; margin-bottom: 8px; }
-        .subcategory-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+/* TABS */
+.tabs{display:flex;gap:8px;background:rgba(11,15,25,.6);border:1px solid var(--line-soft);border-radius:14px;padding:6px;margin-bottom:24px}
+.tabs button{flex:1;padding:11px;border:0;border-radius:9px;background:transparent;color:var(--txt-dim);font-family:inherit;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .3s}
+.tabs button.active{background:var(--grad);color:#04121f;box-shadow:var(--glow-cyan)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
 
-        .input-field, .textarea-field { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 15px; color: var(--text-primary); font-size: 14px; width: 100%; margin-bottom: 15px; font-family: 'Tajawal', sans-serif; }
-        .input-field option { background: #0a0f1e; color: #fff; }
+/* ADMIN */
+.admin-state{display:none}
+.admin-state.active{display:block}
+.pending-list{display:flex;flex-direction:column;gap:14px;margin-top:6px;max-height:52vh;overflow-y:auto;padding-right:4px}
+.vrow{border:1px solid var(--line);border-radius:14px;padding:16px;background:rgba(11,15,25,.55)}
+.vrow .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.vrow b{font-size:1rem}
+.vrow .cat{display:inline-block;margin-top:4px;font-size:.78rem;color:var(--cyan);font-weight:700}
+.vrow .det{color:var(--txt-dim);font-size:.85rem;margin-top:8px;line-height:1.5}
+.vrow .acts{display:flex;gap:10px;margin-top:14px}
+.status-pill{font-size:.7rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.status-pill.pending{background:rgba(255,196,0,.15);color:#ffd24d;border:1px solid rgba(255,196,0,.3)}
+.status-pill.approved{background:rgba(26,255,140,.15);color:var(--green);border:1px solid rgba(26,255,140,.3)}
+.empty-note{text-align:center;color:var(--txt-faint);padding:30px 10px;font-size:.92rem;line-height:1.6}
+.spinner{width:34px;height:34px;border:3px solid rgba(0,242,254,.2);border-top-color:var(--cyan);border-radius:50%;margin:24px auto;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-        .intercity-box { background: rgba(0, 217, 255, 0.05); border: 1px dashed var(--primary); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
-        .intercity-title { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+/* FOOTER */
+footer{border-top:1px solid var(--line-soft);padding:56px 0 90px;margin-top:30px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:34px}
+.foot-grid p{color:var(--txt-dim);font-size:.92rem;margin-top:12px;max-width:320px}
+.foot-col h4{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px;font-family:'Orbitron',sans-serif;font-weight:600}
+.foot-col a,.foot-col button.linklike{display:flex;align-items:center;gap:9px;color:var(--txt-dim);text-decoration:none;font-size:.94rem;margin-bottom:12px;transition:color .25s;background:none;border:0;cursor:pointer;font-family:inherit;text-align:left;padding:0}
+.foot-col a:hover,.foot-col button.linklike:hover{color:var(--cyan)}
+.foot-bottom{margin-top:44px;padding-top:24px;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--txt-faint);font-size:.85rem}
 
-        .provider-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; margin-bottom: 15px; transition: all 0.3s ease; }
-        .provider-card:hover { border-color: var(--primary); transform: translateY(-2px); }
-        .distance-badge { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; }
-        .rating-stars { color: #fbbf24; font-size: 14px; margin: 5px 0; }
-        .contact-btn { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 12px 20px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; font-family: 'Tajawal', sans-serif; transition: all 0.3s ease; }
-        .contact-btn:hover { box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); }
+/* FLOATING ACTION BUTTONS (both corners) */
+.fab{position:fixed;bottom:22px;z-index:80;display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;padding:14px 20px;border-radius:999px;cursor:pointer;border:0;font-family:inherit;font-size:.92rem;transition:transform .25s var(--ease),box-shadow .3s}
+.fab:hover{transform:scale(1.06)}
+.fab.register{right:22px;background:var(--grad);color:#04121f;box-shadow:var(--glow-cyan-strong);animation:bob 2.8s var(--ease) infinite}
+.fab.support{left:22px;background:linear-gradient(135deg,#25d366,#0fae53);color:#03190d;box-shadow:0 8px 30px rgba(37,211,102,.45);animation:bob 2.8s var(--ease) infinite .4s}
+.fab .ic{font-size:1.25rem}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 15px; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; font-size: 16px; }
-        .btn-danger { background: linear-gradient(135deg, #f43f5e, #e11d48); color: white; padding: 15px; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; font-size: 16px; }
+/* TOAST */
+#toaster{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:120;display:flex;flex-direction:column;gap:10px;width:min(92vw,420px)}
+.toast{display:flex;align-items:flex-start;gap:11px;padding:14px 16px;border-radius:14px;background:var(--surface-solid);border:1px solid var(--line);box-shadow:var(--glow-cyan);font-size:.92rem;font-weight:600;animation:toastIn .35s var(--ease);line-height:1.45;cursor:pointer}
+.toast.ok{border-color:rgba(26,255,140,.5);box-shadow:var(--glow-green)}
+.toast.err{border-color:rgba(255,93,108,.5);box-shadow:0 0 18px rgba(255,93,108,.25)}
+.toast .ti{font-size:1.15rem;flex-shrink:0}
+@keyframes toastIn{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+.toast.out{opacity:0;transform:translateY(-14px);transition:.35s}
 
-        .approve-btn { background: linear-gradient(135deg, var(--success), #059669); color: white; padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; margin: 5px; }
-        .reject-btn { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; margin: 5px; }
-        .pending-badge { background: #ef4444; color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
-        .approved-badge { background: #10b981; color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.hero .stagger{opacity:0;transform:translateY(22px);animation:fadeUp .8s var(--ease) forwards}
+.hero .stagger:nth-child(1){animation-delay:.05s}.hero .stagger:nth-child(2){animation-delay:.18s}.hero .stagger:nth-child(3){animation-delay:.30s}.hero .stagger:nth-child(4){animation-delay:.42s}.hero .stagger:nth-child(5){animation-delay:.54s}.hero .stagger:nth-child(6){animation-delay:.66s}
+@keyframes fadeUp{to{opacity:1;transform:none}}
 
-        .footer { text-align: center; padding: 25px; margin-top: 30px; background: var(--card-glass); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; }
-        .footer-contact { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-        .contact-item { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--primary); font-size: 14px; font-weight: 600; }
-        .contact-item a { color: var(--primary); text-decoration: none; }
-        .footer-text { color: var(--text-secondary); font-size: 12px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
-
-        .secret-admin-trigger { position: fixed; bottom: 10px; left: 10px; width: 35px; height: 35px; opacity: 0.02; cursor: pointer; z-index: 999; background: white; }
-
-        @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .services-grid { grid-template-columns: 1fr; }
-            .subcategory-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+/* RESPONSIVE */
+@media (max-width:900px){.reviews-grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.foot-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){
+  .nav-links{position:absolute;top:70px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:rgba(11,15,25,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:10px 20px 18px;display:none}
+  .nav-links.open{display:flex}
+  .nav-links a,.nav-links button.linklike{padding:13px 0;border-bottom:1px solid var(--line-soft);text-align:left}
+  .nav-links .btn{margin:14px 0 0;justify-content:center}
+  .menu-toggle{display:block}
+}
+@media (max-width:560px){
+  section{padding:54px 0}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .cards{grid-template-columns:1fr}
+  .row-2{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+  .search .btn span{display:none}
+  .vendor-cta{padding:40px 22px}
+  .modal{padding:26px 20px}
+  .fab span{display:none}
+  .fab{padding:15px;border-radius:50%}
+}
+</style>
 </head>
 <body>
-    <div class="bg-animation">
-        <div class="gradient-orb orb-1"></div>
-        <div class="gradient-orb orb-2"></div>
-        <div class="gradient-orb orb-3"></div>
+
+<div class="bg-fx"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+<div class="grid-fx"></div>
+<div class="grain"></div>
+<div id="toaster"></div>
+
+<!-- NAVBAR -->
+<header class="nav">
+  <div class="shell nav-inner">
+    <a class="brand" href="#top"><span class="mark">A</span><span>Abbottabad <span class="grad-text">Prime</span></span></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#services">Services</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#vendor">For Vendors</a>
+      <button class="linklike" onclick="openAdmin()">🔒 Admin</button>
+      <a href="#contact">Contact</a>
+      <button class="btn" onclick="openVendorModal('register')">Become a Vendor</button>
+    </nav>
+    <button class="menu-toggle" aria-label="Menu" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+  </div>
+</header>
+<a id="top"></a>
+
+<!-- HERO -->
+<section class="hero shell">
+  <div class="stagger gps-badge" id="gpsBadge"><span class="gps-dot"></span>📡 GPS Checking...</div>
+  <h1 class="stagger"><span class="grad-text">Abbottabad Prime Portal</span></h1>
+  <div class="stagger sub">World's Best Local Services</div>
+  <p class="stagger lead">One premium portal for intercity rides, trusted medical specialists, expert home services, property, education and more — verified, rated and available around the clock.</p>
+  <div class="stagger search-wrap">
+    <div class="search">
+      <span class="ico">🔎</span>
+      <input id="searchInput" type="text" placeholder="Search a service or category — e.g. plumber, ride, doctor…" />
+      <button class="btn" onclick="runSearch()">🔍 <span>Search</span></button>
     </div>
-    <div class="particles" id="particles"></div>
-    <div class="secret-admin-trigger" onclick="openModal('adminPanel')"></div>
+    <div class="search-note" id="searchNote"></div>
+  </div>
+  <div class="stagger stats">
+    <div class="stat"><div class="num grad-text" id="liveCustomers">+1200</div><div class="lbl">Happy Customers</div></div>
+    <div class="stat"><div class="num grad-text" id="liveVendors">+46</div><div class="lbl">Registered Vendors</div></div>
+    <div class="stat"><div class="num grad-text">24/7</div><div class="lbl">Global Support</div></div>
+    <div class="stat"><div class="num grad-text">⭐ 4.9</div><div class="lbl">Average Rating</div></div>
+  </div>
+</section>
 
-    <div class="container">
-        <div class="portal-intro-hero">
-            <h2>ایبٹ آباد پرائم پورٹل</h2>
-            <p>ایبٹ آباد کا سب سے بڑا ڈیجیٹل سروسز پلیٹ فارم۔ اب میڈیکل اسپیشلسٹس، ٹیکنیشنز، پراپرٹی، ہوم ٹیوٹرز، کار شیئرنگ اور بکس ایکسچینج جیسی تمام سہولیات ایک ہی جگہ پر لائیو لوکیشن اور فوری تصدیق کے ساتھ دستیاب ہیں۔</p>
-            <div class="live-location-badge">
-                <div class="pulse-dot"></div>
-                <span id="locationStatus">صارف کی لوکیشن تلاش کی جا رہی ہے... Detecting Live Location...</span>
-            </div>
-        </div>
+<!-- SERVICES -->
+<section id="services" class="shell">
+  <div class="sec-head reveal">
+    <div class="eyebrow">Explore Categories</div>
+    <h2>Everything local, <span class="grad-text">in one portal</span></h2>
+    <p>Tap a sector to browse verified providers near you. Each listing is rated by real customers.</p>
+  </div>
+  <div class="cards" id="cardsGrid"></div>
+</section>
 
-        <div class="vendor-action-container">
-            <div class="vendor-banner">
-                <h3>🌟 سروس فراہم کریں</h3>
-                <button class="register-vendor-btn" onclick="openModal('vendorRegister')">رجسٹر کریں</button>
-            </div>
-            <div class="vendor-delete-banner">
-                <h3>❌ اینٹری ڈیلیٹ کریں</h3>
-                <button class="delete-vendor-btn" onclick="openModal('vendorSelfDelete')">پروفائل ہٹائیں</button>
-            </div>
-        </div>
-
-        <div class="header">
-            <div class="header-content">
-                <div class="logo-section">
-                    <div class="logo">🏔️</div>
-                    <div class="title-section">
-                        <h1>ABBOTTABAD PRIME PORTAL</h1>
-                        <p>WORLD'S BEST LOCAL SERVICES</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="search-container">
-            <input type="text" class="search-bar" placeholder="🔍 تلاش کریں... Search Services, Vendors, Areas" id="searchInput" oninput="filterCards()">
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card"><div class="stat-number" id="vCount">45+</div><div class="stat-label">Vendors</div></div>
-            <div class="stat-card"><div class="stat-number">1200+</div><div class="stat-label">Customers</div></div>
-            <div class="stat-card"><div class="stat-number">4.9★</div><div class="stat-label">Rating</div></div>
-            <div class="stat-card"><div class="stat-number">24/7</div><div class="stat-label">Support</div></div>
-        </div>
-
-        <div class="services-grid" id="mainServicesGrid">
-            <div class="service-card" onclick="openModal('doctors')">
-                <div class="trending-badge">🔥 Popular</div>
-                <div class="service-icon">👨‍⚕️</div>
-                <div class="service-title">Doctors</div>
-                <div class="service-count">All Specializations</div>
-            </div>
-
-            <div class="service-card" onclick="openModal('technicians')">
-                <div class="service-icon">🔧</div>
-                <div class="service-title">Technicians</div>
-                <div class="service-count">Technical Experts</div>
-            </div>
-
-            <div class="service-card" onclick="openModal('property')">
-                <div class="service-icon">🏠</div>
-                <div class="service-title">Property Hub</div>
-                <div class="service-count">Buy, Rent, Commercial</div>
-            </div>
-
-            <div class="service-card" onclick="openModal('tutors')">
-                <div class="service-icon">🎓</div>
-                <div class="service-title">Tutors Hub</div>
-                <div class="service-count">Home & Online</div>
-            </div>
-
-            <div class="service-card" onclick="openModal('sawar')">
-                <div class="new-badge">NEW</div>
-                <div class="service-icon">🚗</div>
-                <div class="service-title">Sawar & Swari</div>
-                <div class="service-count">Rides & Intercity</div>
-            </div>
-
-            <div class="service-card" onclick="openModal('books')">
-                <div class="service-icon">📚</div>
-                <div class="service-title">Books Hub</div>
-                <div class="service-count">Sale & Exchange</div>
-            </div>
-        </div>
-
-        <div class="footer">
-            <div class="footer-contact">
-                <div class="contact-item"><i class="fab fa-whatsapp"></i><a href="https://wa.me/923174886655" target="_blank">+92 317 4886655</a></div>
-                <div class="contact-item"><i class="fas fa-envelope"></i><a href="mailto:Fasttarget222@gmail.com">Fasttarget222@gmail.com</a></div>
-            </div>
-            <div class="footer-text">
-                © 2026 Abbottabad Prime Portal. World's Best Local Services Platform.
-            </div>
-        </div>
+<!-- REVIEWS -->
+<section id="reviews" class="shell">
+  <div class="sec-head reveal">
+    <div class="eyebrow">Trusted by the community</div>
+    <h2>What people <span class="grad-text">are saying</span></h2>
+    <p>Real ratings from real customers — and you can add yours below.</p>
+  </div>
+  <div class="reviews-grid">
+    <div class="rolling reveal">
+      <div class="quote-mark">"</div>
+      <div class="review-card" id="reviewCard">
+        <div class="stars-out" id="rStars">★★★★★</div>
+        <div class="text" id="rText"></div>
+        <div class="who"><div class="av" id="rAv">A</div><div class="meta"><b id="rName"></b><span id="rService"></span></div></div>
+      </div>
+      <div class="dots" id="reviewDots"></div>
     </div>
+    <div class="form-card reveal">
+      <h3>Share your experience</h3>
+      <p class="hint">Help others choose the right provider.</p>
+      <div class="field"><label for="revName">Full Name</label><input id="revName" type="text" placeholder="Your name" /></div>
+      <div class="field"><label for="revService">Service Type</label><input id="revService" type="text" placeholder="e.g. Electrician, Intercity Ride" /></div>
+      <div class="field"><label>Your Rating</label>
+        <div class="star-pick" id="starPick" data-value="0"><span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span></div>
+      </div>
+      <div class="field"><label for="revMsg">Message / Comment</label><textarea id="revMsg" placeholder="Tell us how it went…"></textarea></div>
+      <button class="btn" id="reviewSubmitBtn" onclick="submitReview()">⭐ Submit Review</button>
+    </div>
+  </div>
+</section>
 
-    <div id="doctorsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title"><span>👨‍⚕️</span><span>Medical Specialists</span></div>
-                <button class="close-btn" onclick="closeModal('doctorsModal')">&times;</button>
-            </div>
-            <div class="subcategory-grid">
-                <div class="subcategory-card" onclick="showNearestProviders('doc-gp')"><div class="subcategory-icon">🩺</div><div class="subcategory-title">General Physician</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('doc-ent')"><div class="subcategory-icon">👂</div><div class="subcategory-title">ENT Specialist</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('doc-cardio')"><div class="subcategory-icon">❤️</div><div class="subcategory-title">Cardiologist</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('doc-peds')"><div class="subcategory-icon">👶</div><div class="subcategory-title">Pediatrician</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('doc-ortho')"><div class="subcategory-icon">🦴</div><div class="subcategory-title">Orthopedic Surgeon</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('doc-gynae')"><div class="subcategory-icon">🤰</div><div class="subcategory-title">Gynecologist</div></div>
-            </div>
-        </div>
+<!-- VENDOR CTA -->
+<section id="vendor" class="shell">
+  <div class="vendor-cta reveal">
+    <div class="eyebrow">Grow your business</div>
+    <h2>Register as a <span class="grad-text">Premium Service Provider</span></h2>
+    <p>Join Abbottabad's fastest-growing services network. Get discovered by thousands of local customers, build your reputation with verified reviews, and manage your listing anytime.</p>
+    <div class="cta-row">
+      <button class="btn" onclick="openVendorModal('register')">🚀 Register Now</button>
+      <button class="btn ghost" onclick="openVendorModal('manage')">🔑 Manage My Listing</button>
+    </div>
+    <div class="vendor-perks">
+      <span class="perk">✅ Free listing</span>
+      <span class="perk">✏️ Edit anytime</span>
+      <span class="perk">🗑️ Delete on request</span>
+      <span class="perk">⭐ Verified reviews</span>
+      <span class="perk">📡 GPS discovery</span>
+    </div>
+  </div>
+</section>
+
+<!-- VENDOR MODAL (Register / Manage tabs) -->
+<div class="overlay" id="vendorOverlay" onclick="if(event.target===this)closeVendorModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="vendorTitle">
+    <button class="x" aria-label="Close" onclick="closeVendorModal()">✕</button>
+    <h3 id="vendorTitle">Register as a Premium Service Provider</h3>
+    <p class="hint">Fill in your details, then manage them anytime using your phone number.</p>
+
+    <div class="tabs">
+      <button id="tabRegisterBtn" class="active" onclick="switchVendorTab('register')">📝 Register</button>
+      <button id="tabManageBtn" onclick="switchVendorTab('manage')">🔑 Manage Existing</button>
     </div>
 
-    <div id="techniciansModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title"><span>🔧</span><span>Technical Services</span></div>
-                <button class="close-btn" onclick="closeModal('techniciansModal')">&times;</button>
-            </div>
-            <div class="subcategory-grid">
-                <div class="subcategory-card" onclick="openModal('electrician')"><div class="subcategory-icon">⚡</div><div class="subcategory-title">Electrician Options</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('plumber')"><div class="subcategory-icon">🚰</div><div class="subcategory-title">Plumber</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('ac')"><div class="subcategory-icon">❄️</div><div class="subcategory-title">AC / Fridge Repair</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('carpenter')"><div class="subcategory-icon">🪚</div><div class="subcategory-title">Carpenter</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('painter')"><div class="subcategory-icon">🎨</div><div class="subcategory-title">Painter</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('mechanic')"><div class="subcategory-icon">🚗</div><div class="subcategory-title">Auto Mechanic</div></div>
-            </div>
-        </div>
+    <!-- REGISTER PANEL -->
+    <div class="tab-panel active" id="panelRegister">
+      <div class="field"><label for="vName">Full Name</label><input id="vName" type="text" placeholder="Your full name" /></div>
+      <div class="row-2">
+        <div class="field"><label for="vPhone">Phone Number</label><input id="vPhone" type="tel" placeholder="03XX-XXXXXXX" /></div>
+        <div class="field"><label for="vExp">Experience (Years)</label><input id="vExp" type="number" min="0" placeholder="e.g. 5" /></div>
+      </div>
+      <div class="field"><label for="vAddress">Address</label><input id="vAddress" type="text" placeholder="Your business / service address" /></div>
+      <div class="field"><label for="vCategory">Service Category</label><select id="vCategory"></select></div>
+      <div class="field"><label for="vDesc">Description</label><textarea id="vDesc" placeholder="Describe your services, areas covered, pricing, etc."></textarea></div>
+      <button class="btn" id="vRegisterBtn" onclick="submitVendor()">📨 Submit Registration</button>
     </div>
 
-    <div id="electricianModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title"><span>⚡</span><span>Electrician Options</span></div>
-                <button class="close-btn" onclick="closeModal('electricianModal')">&times;</button>
-            </div>
-            <div class="subcategory-grid">
-                <div class="subcategory-card" onclick="showNearestProviders('elec-solar')"><div class="subcategory-icon">☀️</div><div class="subcategory-title">Solar Panel Setup</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('elec-wiring')"><div class="subcategory-icon">🏠</div><div class="subcategory-title">House Wiring</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('elec-ups')"><div class="subcategory-icon">🔋</div><div class="subcategory-title">UPS & Battery</div></div>
-            </div>
+    <!-- MANAGE PANEL -->
+    <div class="tab-panel" id="panelManage">
+      <div id="manageLogin">
+        <p class="hint" style="margin-top:0">Enter the phone number you registered with to load and manage your listing.</p>
+        <div class="field"><label for="mPhone">Registered Phone Number</label><input id="mPhone" type="tel" placeholder="03XX-XXXXXXX" /></div>
+        <button class="btn ghost" id="mFindBtn" onclick="findVendor()">🔍 Find My Listing</button>
+      </div>
+
+      <div id="manageEdit" style="display:none">
+        <div class="field"><label for="eName">Full Name</label><input id="eName" type="text" /></div>
+        <div class="row-2">
+          <div class="field"><label for="ePhone">Phone Number</label><input id="ePhone" type="tel" readonly title="Phone is your login key and cannot be changed here" /></div>
+          <div class="field"><label for="eExp">Experience (Years)</label><input id="eExp" type="number" min="0" /></div>
         </div>
+        <div class="field"><label for="eAddress">Address</label><input id="eAddress" type="text" /></div>
+        <div class="field"><label for="eCategory">Service Category</label><select id="eCategory"></select></div>
+        <div class="field"><label for="eDesc">Description</label><textarea id="eDesc"></textarea></div>
+        <button class="btn ok" id="eUpdateBtn" onclick="updateVendor()">💾 Save Changes</button>
+        <button class="btn danger" id="eDeleteBtn" style="width:100%;justify-content:center;margin-top:10px" onclick="deleteVendor()">🗑️ Delete My Listing</button>
+        <button class="linklike" style="display:block;width:100%;text-align:center;margin-top:14px;color:var(--txt-faint);background:none;border:0;cursor:pointer;font-family:inherit" onclick="resetManage()">← Search a different number</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div class="overlay" id="adminOverlay" onclick="if(event.target===this)closeAdmin()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+    <button class="x" aria-label="Close" onclick="closeAdmin()">✕</button>
+    <h3 id="adminTitle">🔒 Admin Approval Panel</h3>
+
+    <!-- LOGIN STATE -->
+    <div class="admin-state active" id="adminLogin">
+      <p class="hint">Restricted area. Enter the admin password to review pending vendors.</p>
+      <div class="field"><label for="adminPass">Admin Password</label><input id="adminPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminUnlock()" /></div>
+      <button class="btn" onclick="adminUnlock()">🔓 Unlock Panel</button>
     </div>
 
-    <div id="propertyModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title"><span>🏠</span><span>Property Hub</span></div>
-                <button class="close-btn" onclick="closeModal('propertyModal')">&times;</button>
-            </div>
-            <div class="subcategory-grid">
-                <div class="subcategory-card" onclick="showNearestProviders('prop-rent-house')"><div class="subcategory-icon">🔑</div><div class="subcategory-title">House for Rent</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('prop-sale-house')"><div class="subcategory-icon">💰</div><div class="subcategory-title">House for Sale</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('prop-plots')"><div class="subcategory-icon">📐</div><div class="subcategory-title">Plots & Land</div></div>
-            </div>
-        </div>
+    <!-- DASHBOARD STATE -->
+    <div class="admin-state" id="adminDash">
+      <p class="hint">Review, approve or remove vendor applications. Approved vendors go live in the directory.</p>
+      <div style="display:flex;gap:10px;margin-bottom:16px">
+        <button class="btn ghost sm" onclick="loadPending()">🔄 Refresh</button>
+        <button class="btn ghost sm" onclick="adminLogout()">🚪 Log out</button>
+      </div>
+      <div class="pending-list" id="pendingList"></div>
     </div>
+  </div>
+</div>
 
-    <div id="tutorsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title"><span>🎓</span><span>Academic Tutors</span></div>
-                <button class="close-btn" onclick="closeModal('tutorsModal')">&times;</button>
-            </div>
-            <div class="subcategory-grid">
-                <div class="subcategory-card" onclick="showNearestProviders('tut-matric')"><div class="subcategory-icon">📝</div><div class="subcategory-title">Matric / FSc</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('tut-alevel')"><div class="subcategory-icon">🇬🇧</div><div class="subcategory-title">O / A Levels</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('tut-quran')"><div class="subcategory-icon">📖</div><div class="subcategory-title">Quran & Arabic</div></div>
-            </div>
-        </div>
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="shell">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="brand" style="font-size:1.1rem"><span class="mark">A</span><span>Abbottabad <span class="grad-text">Prime</span></span></div>
+        <p>World's best local services portal — connecting Abbottabad with verified rides, medical specialists, home experts, property and educators, around the clock.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <a href="#services">Services</a>
+        <a href="#reviews">Reviews</a>
+        <button class="linklike" onclick="openVendorModal('register')">Become a Vendor</button>
+        <button class="linklike" onclick="openVendorModal('manage')">Manage My Listing</button>
+      </div>
+      <div class="foot-col">
+        <h4>Contact</h4>
+        <a href="https://wa.me/923174886655" target="_blank" rel="noopener">💬 WhatsApp: +92 317 4886655</a>
+        <a href="mailto:Fasttarget222@gmail.com">✉️ Fasttarget222@gmail.com</a>
+        <button class="linklike" onclick="openAdmin()">🔒 Admin Panel</button>
+      </div>
     </div>
-
-    <div id="sawarModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title"><span>🚗</span><span>Sawar & Swari Dashboard</span></div>
-                <button class="close-btn" onclick="closeModal('sawarModal')">&times;</button>
-            </div>
-            <div class="subcategory-grid" style="margin-bottom: 20px;">
-                <div class="subcategory-card" onclick="showNearestProviders('ride-bike')"><div class="subcategory-icon">🏍️</div><div class="subcategory-title">Local Bike Ride</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('ride-rent')"><div class="subcategory-icon">🔑</div><div class="subcategory-title">Rent A Car</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('ride-delivery')"><div class="subcategory-icon">📦</div><div class="subcategory-title">Instant Delivery</div></div>
-            </div>
-            
-            <div class="intercity-box">
-                <div class="intercity-title"><i class="fas fa-route"></i> انٹر سٹی کار شیئرنگ (Intercity Car Share)</div>
-                <div class="subcategory-grid">
-                    <div class="subcategory-card" onclick="showNearestProviders('ride-share-out')" style="background: rgba(139, 92, 246, 0.1); border-color: var(--secondary);">
-                        <div class="subcategory-icon">🛫</div>
-                        <div class="subcategory-title" style="font-size:12px;">Abbottabad to Intercity</div>
-                    </div>
-                    <div class="subcategory-card" onclick="showNearestProviders('ride-share-in')" style="background: rgba(139, 92, 246, 0.1); border-color: var(--secondary);">
-                        <div class="subcategory-icon">🛬</div>
-                        <div class="subcategory-title" style="font-size:12px;">Intercity to Abbottabad</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> Abbottabad Prime Portal. All rights reserved.</span>
+      <span>Built for the community of Abbottabad.</span>
     </div>
+  </div>
+</footer>
 
-    <div id="booksModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title"><span>📚</span><span>Books Hub</span></div>
-                <button class="close-btn" onclick="closeModal('booksModal')">&times;</button>
-            </div>
-            <div class="subcategory-grid">
-                <div class="subcategory-card" onclick="showNearestProviders('book-sale')"><div class="subcategory-icon">🏷️</div><div class="subcategory-title">Books for Sale</div></div>
-                <div class="subcategory-card" onclick="showNearestProviders('book-exchange')"><div class="subcategory-icon">🔄</div><div class="subcategory-title">Book Exchange</div></div>
-            </div>
-        </div>
-    </div>
+<!-- FLOATING ACTION BUTTONS (both corners) -->
+<button class="fab register" onclick="openVendorModal('register')" aria-label="Register Now"><span class="ic">🚀</span><span>Register Now</span></button>
+<a class="fab support" href="https://wa.me/923174886655" target="_blank" rel="noopener" aria-label="Contact Support"><span class="ic">💬</span><span>Contact Support</span></a>
 
-    <div id="providersModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title"><span>📍</span><span id="providersTitle">ماہرین لسٹ</span></div>
-                <button class="close-btn" onclick="closeModal('providersModal')">&times;</button>
-            </div>
-            <div id="providersList"></div>
-        </div>
-    </div>
+<script>
+/* ============================================================
+   CONFIG + API ENDPOINTS
+============================================================ */
+const SERVER_URL = 'https://abbottabad-backend.onrender.com';
+const ADMIN_PASSWORD = 'AliYar@1992';
+const API = {
+  stats:    function()      { return SERVER_URL + '/api/vendors/stats'; },
+  register: function()      { return SERVER_URL + '/api/vendors/register'; },
+  lookup:   function(phone) { return SERVER_URL + '/api/vendors/lookup?phone=' + encodeURIComponent(phone); },
+  update:   function(phone) { return SERVER_URL + '/api/vendors/' + encodeURIComponent(phone); },   // PUT
+  remove:   function(phone) { return SERVER_URL + '/api/vendors/' + encodeURIComponent(phone); },   // DELETE
+  pending:  function()      { return SERVER_URL + '/api/vendors/pending'; },
+  approve:  function(id)    { return SERVER_URL + '/api/vendors/' + encodeURIComponent(id) + '/approve'; }, // PUT
+  reject:   function(id)    { return SERVER_URL + '/api/vendors/' + encodeURIComponent(id); },       // DELETE
+  reviews:  function()      { return SERVER_URL + '/api/reviews/submit'; }
+};
 
-    <div id="vendorRegisterModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title"><span>📝</span><span>Vendor Registration</span></div>
-                <button class="close-btn" onclick="closeModal('vendorRegisterModal')">&times;</button>
-            </div>
-            <input type="text" class="input-field" placeholder="👤 نام - Full Name" id="vendorName">
-            <input type="tel" class="input-field" placeholder="📞 فون نمبر - Phone Number" id="vendorPhone">
-            <input type="text" class="input-field" placeholder="📍 پتہ - Address (e.g. Mandian)" id="vendorAddress">
-            
-            <select class="input-field" id="vendorCategory" onchange="handleCategoryChange(this.value)">
-                <option value="">خدمت کی قسم منتخب کریں - Select Category</option>
-                <optgroup label="Car Share & Intercity Routes">
-                    <option value="ride-share-out">🚗 Intercity Ride: Abbottabad to Other City</option>
-                    <option value="ride-share-in">🚗 Intercity Ride: Other City to Abbottabad</option>
-                    <option value="ride-bike">🏍️ Bike Ride Share Provider</option>
-                    <option value="ride-rent">🔑 Rent-A-Car Agency</option>
-                    <option value="ride-delivery">📦 Local Delivery Courier</option>
-                </optgroup>
-                <optgroup label="Other Categories">
-                    <option value="doc-gp">🩺 General Physician</option>
-                    <option value="doc-ent">👂 ENT Specialist</option>
-                    <option value="plumber">🚰 Plumber Experts</option>
-                    <option value="ac">❄️ AC Repair</option>
-                    <option value="tut-matric">📝 Matric Teacher</option>
-                    <option value="book-exchange">🔄 Book Exchange Member</option>
-                </optgroup>
-            </select>
+/* ============================================================
+   CATEGORY DATA (drives cards + selects + search)
+============================================================ */
+const CATEGORIES = [
+  { icon:'🚗', group:'Car Share & Intercity Routes',
+    items:[
+      {e:'🚗', t:'Intercity Ride: Abbottabad to Other City'},
+      {e:'🚗', t:'Intercity Ride: Other City to Abbottabad'},
+      {e:'🏍️', t:'Bike Ride Share Provider'},
+      {e:'🔑', t:'Rent-A-Car Agency'},
+      {e:'📦', t:'Local Delivery Courier'}
+    ]},
+  { icon:'🩺', group:'Medical Specialists',
+    items:[
+      {e:'🩺', t:'General Physician'},
+      {e:'👂', t:'ENT Specialist'},
+      {e:'❤️', t:'Cardiologist'},
+      {e:'👶', t:'Pediatrician'},
+      {e:'🦴', t:'Orthopedic Surgeon'},
+      {e:'🤰', t:'Gynecologist'}
+    ]},
+  { icon:'🔧', group:'Technical & Home Services',
+    items:[
+      {e:'🔧', t:'Plumber Experts'},
+      {e:'❄️', t:'AC Repair'},
+      {e:'⚡', t:'Electrician'}
+    ]},
+  { icon:'🏢', group:'Property, Education & Others',
+    items:[
+      {e:'🏢', t:'Property Listing / Management'},
+      {e:'📝', t:'Matric Teacher'},
+      {e:'📚', t:'Book Exchange Member'}
+    ]}
+];
 
-            <div id="dynamicRouteBox" style="display:none;" class="intercity-box">
-                <input type="text" class="input-field" placeholder="🏙️ شہر کا نام لکھیں - Target City Name" id="vendorTargetCity" style="margin-bottom:0;">
-            </div>
+/* ============================================================
+   TOAST SYSTEM
+============================================================ */
+function toast(msg, type){
+  type = type || 'info';
+  const ic = type === 'ok' ? '✅' : type === 'err' ? '⚠️' : 'ℹ️';
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.innerHTML = '<span class="ti">' + ic + '</span><span>' + msg + '</span>';
+  document.getElementById('toaster').appendChild(el);
+  const life = setTimeout(dismiss, 5200);
+  function dismiss(){ clearTimeout(life); el.classList.add('out'); setTimeout(function(){ el.remove(); }, 360); }
+  el.addEventListener('click', dismiss);
+  return el;
+}
 
-            <div id="dynamicTimeBox" style="display:none;" class="intercity-box">
-                <div class="intercity-title"><i class="fas fa-clock"></i> اویلیبلٹی ٹائم اور تاریخ (Availability Slot)</div>
-                <input type="date" class="input-field" id="vendorDate">
-                <input type="time" class="input-field" id="vendorTime" style="margin-bottom:0;">
-            </div>
+/* ============================================================
+   FETCH WITH TIMEOUT (handles Render spin-up sleep)
+============================================================ */
+async function apiFetch(url, opts, timeoutMs){
+  opts = opts || {}; timeoutMs = timeoutMs || 45000;
+  const ctrl = new AbortController();
+  const id = setTimeout(function(){ ctrl.abort(); }, timeoutMs);
+  try{
+    return await fetch(url, Object.assign({}, opts, { signal: ctrl.signal }));
+  } finally { clearTimeout(id); }
+}
+let wakeToastEl = null;
+function showWaking(){ if(!wakeToastEl) wakeToastEl = toast('Connecting to the server… (it may be waking up, please wait)', 'info'); }
+function clearWaking(){ if(wakeToastEl){ wakeToastEl.click(); wakeToastEl = null; } }
 
-            <input type="number" class="input-field" placeholder="⭐ تجربہ / گاڑی کا ماڈل - Experience / Car Model Year" id="vendorExperience">
-            <textarea class="textarea-field" placeholder="📝 تفصیل - Description / Available Seats" id="vendorDescription" rows="3"></textarea>
-            
-            <button class="btn-primary" onclick="submitVendorRegistration()">رجسٹر کریں - Submit</button>
-        </div>
-    </div>
+/* ============================================================
+   A. LIVE GPS GEOLOCATION
+============================================================ */
+function initGPS(){
+  const badge = document.getElementById('gpsBadge');
+  if(!('geolocation' in navigator)){
+    badge.className = 'stagger gps-badge denied';
+    badge.innerHTML = '🔴 GPS Active (Location Denied)';
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      const lat = pos.coords.latitude.toFixed(2);
+      const lon = pos.coords.longitude.toFixed(2);
+      badge.className = 'stagger gps-badge live';
+      badge.innerHTML = '<span class="gps-dot" style="background:#1aff8c;box-shadow:0 0 10px #1aff8c"></span>🟢 GPS Active (Lat: ' + lat + ', Lon: ' + lon + ')';
+    },
+    function(){
+      badge.className = 'stagger gps-badge denied';
+      badge.innerHTML = '🔴 GPS Active (Location Denied)';
+    },
+    { enableHighAccuracy:true, timeout:8000 }
+  );
+}
 
-    <div id="vendorSelfDeleteModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title"><span>❌</span><span>Delete Your Profile</span></div>
-                <button class="close-btn" onclick="closeModal('vendorSelfDeleteModal')">&times;</button>
-            </div>
-            <p style="font-size:12px; color:var(--text-secondary); margin-bottom:15px; text-align:center;">رجسٹریشن کے وقت ملا ہوا 4 ہندسوں کا خفیہ سیکیورٹی کوڈ درج کر کے اپنی پروفائل فوری ہٹائیں!</p>
-            <input type="tel" class="input-field" placeholder="📞 اپنا رجسٹرڈ فون نمبر" id="selfDeletePhone">
-            <input type="number" class="input-field" placeholder="🔑 4 ہندسوں کا خفیہ کوڈ (Delete Code)" id="selfDeleteCode">
-            <button class="btn-danger" onclick="submitSelfDelete()">مستقل ڈیلیٹ کریں - Delete Now</button>
-        </div>
-    </div>
+/* ============================================================
+   D. REAL-TIME STATS SYNC
+============================================================ */
+function animateCount(el, target){
+  if(typeof target !== 'number' || isNaN(target)){ el.textContent = target; return; }
+  const dur = 1100, t0 = performance.now();
+  function tick(now){
+    const p = Math.min((now - t0) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = '+' + Math.floor(target * eased).toLocaleString();
+    if(p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+async function loadStats(){
+  animateCount(document.getElementById('liveCustomers'), 1200);
+  animateCount(document.getElementById('liveVendors'), 46);
+  try{
+    const res = await apiFetch(API.stats(), {}, 45000);
+    if(!res.ok) throw new Error('Status ' + res.status);
+    const data = await res.json();
+    if(typeof data.totalCustomers !== 'undefined') animateCount(document.getElementById('liveCustomers'), Number(data.totalCustomers));
+    if(typeof data.totalVendors   !== 'undefined') animateCount(document.getElementById('liveVendors'),   Number(data.totalVendors));
+  }catch(err){
+    console.warn('Stats sync skipped:', err.message); // keep animated defaults
+  }
+}
 
-    <div id="adminPanelModal" class="modal">
-        <div class="modal-content" style="max-width: 600px;">
-            <div class="modal-header">
-                <div class="modal-title"><span>🔐</span><span>Admin Control Board</span></div>
-                <button class="close-btn" onclick="closeModal('adminPanelModal')">&times;</button>
-            </div>
-            
-            <div id="adminLogin">
-                <input type="password" class="input-field" placeholder="🔑 Enter Admin Password" id="adminPassword">
-                <button class="btn-primary" onclick="verifyAdminLogin()">Login Dashboard</button>
-            </div>
+/* ============================================================
+   SERVICE CARDS (rendered from CATEGORIES)
+============================================================ */
+function renderCards(){
+  const grid = document.getElementById('cardsGrid');
+  grid.innerHTML = '';
+  CATEGORIES.forEach(function(c){
+    const keywords = (c.group + ' ' + c.items.map(function(i){ return i.t; }).join(' ')).toLowerCase();
+    const chips = c.items.map(function(i){ return '<span class="chip">' + i.e + ' ' + i.t.replace(/^.*?: /, '') + '</span>'; }).join('');
+    const div = document.createElement('div');
+    div.className = 'card reveal';
+    div.dataset.keywords = keywords;
+    div.innerHTML = '<div class="emoji">' + c.icon + '</div><h3>' + c.group + '</h3><div class="chips">' + chips + '</div>';
+    grid.appendChild(div);
+  });
+}
 
-            <div id="adminDashboard" style="display: none;">
-                <h3 style="color: var(--accent); margin-bottom: 10px;">
-                    <i class="fas fa-clock"></i> نئے فارمز (Pending Approval) <span class="pending-badge" id="pendingCount">0</span>
-                </h3>
-                <div id="pendingVendorsList" style="max-height: 25vh; overflow-y: auto; margin-bottom:20px;"></div>
+/* ============================================================
+   CATEGORY SELECTS (optgroups) for register + edit
+============================================================ */
+function buildCategorySelect(sel, placeholder){
+  sel.innerHTML = '';
+  const ph = document.createElement('option');
+  ph.value = ''; ph.disabled = true; ph.selected = true;
+  ph.textContent = placeholder || 'Select Service Category';
+  sel.appendChild(ph);
+  CATEGORIES.forEach(function(c){
+    const og = document.createElement('optgroup');
+    og.label = c.icon + ' ' + c.group;
+    c.items.forEach(function(i){
+      const o = document.createElement('option');
+      o.value = i.t;
+      o.textContent = i.e + ' ' + i.t;
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
+  });
+}
 
-                <h3 style="color: var(--success); margin-bottom: 10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">
-                    <i class="fas fa-check-circle"></i> لائیو ماہرین (Live Approved Vendors)
-                </h3>
-                <div id="approvedVendorsManagementList" style="max-height: 30vh; overflow-y: auto;"></div>
-            </div>
-        </div>
-    </div>
+/* ============================================================
+   SEARCH
+============================================================ */
+function runSearch(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const cards = document.querySelectorAll('#cardsGrid .card');
+  const note = document.getElementById('searchNote');
+  let shown = 0;
+  cards.forEach(function(card){
+    const hay = (card.querySelector('h3').textContent + ' ' + (card.dataset.keywords || '')).toLowerCase();
+    const match = q === '' || hay.includes(q);
+    card.classList.toggle('is-hidden', !match);
+    if(match) shown++;
+  });
+  if(q === '') note.textContent = '';
+  else if(shown === 0) note.textContent = 'No matching category for "' + q + '". Try "ride", "doctor", "plumber", "property" or "teacher".';
+  else note.textContent = 'Showing ' + shown + ' matching ' + (shown === 1 ? 'category' : 'categories') + '.';
+  document.getElementById('services').scrollIntoView({ behavior:'smooth' });
+}
 
-    <script>
-        // Generate Particles Dynamically via JS Back Online
-        function spawnParticles() {
-            const container = document.getElementById('particles');
-            if(!container) return;
-            for (let i = 0; i < 30; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.left = Math.random() * 100 + '%';
-                p.style.top = Math.random() * 100 + '%';
-                p.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
-                p.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
-                p.style.animationDelay = Math.random() * 15 + 's';
-                container.appendChild(p);
-            }
-        }
-        spawnParticles();
+/* ============================================================
+   ROLLING REVIEWS
+============================================================ */
+let reviews = [
+  { name:'Ali Raza',    service:'Intercity Ride',   rating:5, text:'Booked an Abbottabad to Islamabad ride in minutes. Clean car, fair price, on time. Excellent service!' },
+  { name:'Hina Khan',   service:'General Physician', rating:5, text:'Found a verified physician near me through the portal. The reviews helped me choose with confidence.' },
+  { name:'Usman Tariq', service:'AC Repair',         rating:4, text:'Technician arrived the same day and fixed my AC quickly. Very professional and reasonably priced.' },
+  { name:'Sana Malik',  service:'Matric Teacher',    rating:5, text:'My son\u2019s tutor was outstanding. Easy to find, easy to contact. Highly recommend this platform.' }
+];
+let rIndex = 0, rTimer = null;
+function renderReview(i){
+  const r = reviews[i];
+  const card = document.getElementById('reviewCard');
+  card.classList.add('fade');
+  setTimeout(function(){
+    document.getElementById('rStars').textContent = '★★★★★☆☆☆☆☆'.slice(5 - r.rating, 10 - r.rating);
+    document.getElementById('rText').textContent = '\u201C' + r.text + '\u201D';
+    document.getElementById('rName').textContent = r.name;
+    document.getElementById('rService').textContent = r.service;
+    document.getElementById('rAv').textContent = (r.name[0] || 'A').toUpperCase();
+    card.classList.remove('fade');
+  }, 280);
+  document.querySelectorAll('#reviewDots button').forEach(function(d, di){ d.classList.toggle('on', di === i); });
+}
+function buildDots(){
+  const wrap = document.getElementById('reviewDots');
+  wrap.innerHTML = '';
+  reviews.forEach(function(_, i){
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'Review ' + (i + 1));
+    if(i === 0) b.classList.add('on');
+    b.onclick = function(){ rIndex = i; renderReview(rIndex); restartRoll(); };
+    wrap.appendChild(b);
+  });
+}
+function rollNext(){ rIndex = (rIndex + 1) % reviews.length; renderReview(rIndex); }
+function restartRoll(){ clearInterval(rTimer); rTimer = setInterval(rollNext, 4500); }
 
-        const SERVER_URL = window.location.origin;
-        const ADMIN_PASS_KEY = 'AliYar@1992';
-        let allServerVendors = [];
-        let userLatitude = 34.1688, userLongitude = 73.2215;
+/* STAR PICKER */
+const starPick = document.getElementById('starPick');
+const starSpans = starPick.querySelectorAll('span');
+function paintStars(n){ starSpans.forEach(function(s){ s.classList.toggle('lit', Number(s.dataset.v) <= n); }); }
+starSpans.forEach(function(s){
+  s.addEventListener('mouseenter', function(){ paintStars(Number(s.dataset.v)); });
+  s.addEventListener('click', function(){ starPick.dataset.value = s.dataset.v; paintStars(Number(s.dataset.v)); });
+});
+starPick.addEventListener('mouseleave', function(){ paintStars(Number(starPick.dataset.value)); });
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(p => {
-                userLatitude = p.coords.latitude; userLongitude = p.coords.longitude;
-                document.getElementById('locationStatus').textContent = `✅ Live GPS Active Connected`;
-            }, e => {
-                document.getElementById('locationStatus').textContent = "📍 GPS Active (Abbottabad City Base)";
-            });
-        }
+/* SUBMIT REVIEW */
+async function submitReview(){
+  const name = document.getElementById('revName').value.trim();
+  const service = document.getElementById('revService').value.trim();
+  const rating = Number(starPick.dataset.value);
+  const message = document.getElementById('revMsg').value.trim();
+  const btn = document.getElementById('reviewSubmitBtn');
+  if(!name || !service || !rating || !message){ toast('Please add your name, service type, a star rating and a message.', 'err'); return; }
 
-        function calculateRealDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-            return (R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))).toFixed(1);
-        }
+  btn.disabled = true; const old = btn.textContent; btn.textContent = 'Submitting…';
+  showWaking();
+  try{
+    const res = await apiFetch(API.reviews(), {
+      method:'POST', headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ name:name, service:service, rating:rating, message:message })
+    });
+    if(!res.ok) throw new Error('Status ' + res.status);
+    toast('Thank you, ' + name + '! Your review was submitted successfully.', 'ok');
+  }catch(err){
+    toast('Could not reach the server, but your review was added to the live display.', 'err');
+  }finally{
+    clearWaking();
+    reviews.unshift({ name:name, service:service, rating:rating, text:message });
+    rIndex = 0; buildDots(); renderReview(0); restartRoll();
+    document.getElementById('revName').value = '';
+    document.getElementById('revService').value = '';
+    document.getElementById('revMsg').value = '';
+    starPick.dataset.value = '0'; paintStars(0);
+    btn.disabled = false; btn.textContent = old;
+  }
+}
 
-        function handleCategoryChange(val) {
-            document.getElementById('dynamicRouteBox').style.display = (val=='ride-share-out' || val=='ride-share-in') ? 'block' : 'none';
-            document.getElementById('dynamicTimeBox').style.display = val.startsWith('ride-') ? 'block' : 'none';
-        }
+/* ============================================================
+   B. VENDOR MODAL + REGISTER / MANAGE
+============================================================ */
+function openVendorModal(tab){
+  document.getElementById('navLinks').classList.remove('open');
+  switchVendorTab(tab || 'register');
+  document.getElementById('vendorOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeVendorModal(){
+  document.getElementById('vendorOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function switchVendorTab(tab){
+  const isReg = tab === 'register';
+  document.getElementById('tabRegisterBtn').classList.toggle('active', isReg);
+  document.getElementById('tabManageBtn').classList.toggle('active', !isReg);
+  document.getElementById('panelRegister').classList.toggle('active', isReg);
+  document.getElementById('panelManage').classList.toggle('active', !isReg);
+  document.getElementById('vendorTitle').textContent = isReg ? 'Register as a Premium Service Provider' : 'Manage Your Listing';
+}
 
-        async function fetchVendorsFromServer() {
-            try {
-                const response = await fetch(`${SERVER_URL}/api/vendors`);
-                allServerVendors = await response.json();
-                
-                const approved = allServerVendors.filter(v => v.status === 'approved').length;
-                document.getElementById('vCount').textContent = (approved + 45) + "+";
-                document.getElementById('pendingCount').textContent = allServerVendors.filter(v => v.status === 'pending').length;
-            } catch (err) { console.error(err); }
-        }
-        fetchVendorsFromServer(); setInterval(fetchVendorsFromServer, 4000);
+/* REGISTER (POST) */
+async function submitVendor(){
+  const v = {
+    name: document.getElementById('vName').value.trim(),
+    phone: document.getElementById('vPhone').value.trim(),
+    address: document.getElementById('vAddress').value.trim(),
+    category: document.getElementById('vCategory').value,
+    experience: document.getElementById('vExp').value.trim(),
+    description: document.getElementById('vDesc').value.trim()
+  };
+  if(!v.name || !v.phone || !v.address || !v.category){ toast('Please complete Name, Phone, Address and Category.', 'err'); return; }
+  const btn = document.getElementById('vRegisterBtn'); btn.disabled = true; const old = btn.textContent; btn.textContent = 'Submitting…';
+  showWaking();
+  try{
+    const res = await apiFetch(API.register(), {
+      method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(v)
+    });
+    if(!res.ok) throw new Error('Status ' + res.status);
+    toast('Welcome aboard, ' + v.name + '! Your application is submitted and awaiting admin approval. Manage it anytime with your phone number.', 'ok');
+    ['vName','vPhone','vAddress','vExp','vDesc'].forEach(function(id){ document.getElementById(id).value = ''; });
+    document.getElementById('vCategory').selectedIndex = 0;
+    closeVendorModal();
+  }catch(err){
+    toast('Registration could not be sent. Please try again, or message us on WhatsApp at +92 317 4886655.', 'err');
+  }finally{ clearWaking(); btn.disabled = false; btn.textContent = old; }
+}
 
-        function openModal(id) { document.getElementById(id + 'Modal').classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+/* MANAGE — FIND (GET lookup) */
+let currentVendorPhone = null;
+async function findVendor(){
+  const phone = document.getElementById('mPhone').value.trim();
+  if(!phone){ toast('Please enter your registered phone number.', 'err'); return; }
+  const btn = document.getElementById('mFindBtn'); btn.disabled = true; const old = btn.textContent; btn.textContent = 'Searching…';
+  showWaking();
+  try{
+    const res = await apiFetch(API.lookup(phone), {});
+    if(res.status === 404) throw new Error('not-found');
+    if(!res.ok) throw new Error('Status ' + res.status);
+    let data = await res.json();
+    if(Array.isArray(data)) data = data[0];
+    if(!data || !data.phone) throw new Error('not-found');
+    fillEditForm(data);
+    toast('Listing loaded. You can now edit or delete it.', 'ok');
+  }catch(err){
+    if(err.message === 'not-found') toast('No listing found for that phone number.', 'err');
+    else toast('Could not reach the server. Please try again in a moment.', 'err');
+  }finally{ clearWaking(); btn.disabled = false; btn.textContent = old; }
+}
+function fillEditForm(d){
+  currentVendorPhone = d.phone;
+  document.getElementById('eName').value = d.name || '';
+  document.getElementById('ePhone').value = d.phone || '';
+  document.getElementById('eExp').value = d.experience || '';
+  document.getElementById('eAddress').value = d.address || '';
+  document.getElementById('eDesc').value = d.description || '';
+  const eCat = document.getElementById('eCategory');
+  buildCategorySelect(eCat, 'Select Service Category');
+  if(d.category) eCat.value = d.category;
+  document.getElementById('manageLogin').style.display = 'none';
+  document.getElementById('manageEdit').style.display = 'block';
+}
+function resetManage(){
+  currentVendorPhone = null;
+  document.getElementById('manageEdit').style.display = 'none';
+  document.getElementById('manageLogin').style.display = 'block';
+  document.getElementById('mPhone').value = '';
+}
 
-        async function submitVendorRegistration() {
-            const payload = {
-                name: document.getElementById('vendorName').value.trim(),
-                phone: document.getElementById('vendorPhone').value.trim(),
-                address: document.getElementById('vendorAddress').value.trim(),
-                category: document.getElementById('vendorCategory').value,
-                targetCity: document.getElementById('vendorTargetCity').value.trim() || '',
-                availDate: document.getElementById('vendorDate').value || '',
-                availTime: document.getElementById('vendorTime').value || '',
-                experience: document.getElementById('vendorExperience').value,
-                description: document.getElementById('vendorDescription').value.trim(),
-                lat: userLatitude + (Math.random() - 0.5) * 0.04,
-                lon: userLongitude + (Math.random() - 0.5) * 0.04
-            };
+/* MANAGE — UPDATE (PUT) */
+async function updateVendor(){
+  if(!currentVendorPhone) return;
+  const payload = {
+    name: document.getElementById('eName').value.trim(),
+    phone: currentVendorPhone,
+    address: document.getElementById('eAddress').value.trim(),
+    category: document.getElementById('eCategory').value,
+    experience: document.getElementById('eExp').value.trim(),
+    description: document.getElementById('eDesc').value.trim()
+  };
+  if(!payload.name || !payload.address || !payload.category){ toast('Name, Address and Category are required.', 'err'); return; }
+  const btn = document.getElementById('eUpdateBtn'); btn.disabled = true; const old = btn.textContent; btn.textContent = 'Saving…';
+  showWaking();
+  try{
+    const res = await apiFetch(API.update(currentVendorPhone), {
+      method:'PUT', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error('Status ' + res.status);
+    toast('Your listing was updated successfully.', 'ok');
+  }catch(err){
+    toast('Update failed. Please try again in a moment.', 'err');
+  }finally{ clearWaking(); btn.disabled = false; btn.textContent = old; }
+}
 
-            if (!payload.name || !payload.phone || !payload.category || !payload.address) {
-                alert('براہ کرم لازمی خانے پر کریں!'); return;
-            }
+/* MANAGE — DELETE */
+async function deleteVendor(){
+  if(!currentVendorPhone) return;
+  if(!confirm('Are you sure you want to permanently delete your listing? This cannot be undone.')) return;
+  const btn = document.getElementById('eDeleteBtn'); btn.disabled = true; const old = btn.textContent; btn.textContent = 'Deleting…';
+  showWaking();
+  try{
+    const res = await apiFetch(API.remove(currentVendorPhone), { method:'DELETE' });
+    if(!res.ok) throw new Error('Status ' + res.status);
+    toast('Your listing has been deleted.', 'ok');
+    resetManage();
+    closeVendorModal();
+  }catch(err){
+    toast('Delete failed. Please try again in a moment.', 'err');
+  }finally{ clearWaking(); btn.disabled = false; btn.textContent = old; }
+}
 
-            try {
-                const res = await fetch(`${SERVER_URL}/api/vendors/register`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                if (data.success) {
-                    alert(`✅ فارم جمع ہو گیا ہے!\n\n⚠️ آپ کا خفیہ ڈیلیشن کوڈ یہ ہے: ${data.deleteCode}\nاس کوڈ کو یاد رکھیں، اپنی پروفائل ہٹانے کے لیے یہ کوڈ لازمی ہے!`);
-                    closeModal('vendorRegisterModal');
-                    fetchVendorsFromServer();
-                }
-            } catch (err) { alert('سرور کنکشن فیل!'); }
-        }
+/* ============================================================
+   C. ADMIN PANEL
+============================================================ */
+function openAdmin(){
+  document.getElementById('navLinks').classList.remove('open');
+  adminLogout(); // always start at the login state
+  document.getElementById('adminOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function(){ document.getElementById('adminPass').focus(); }, 60);
+}
+function closeAdmin(){
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function adminUnlock(){
+  const pass = document.getElementById('adminPass').value;
+  if(pass === ADMIN_PASSWORD){
+    document.getElementById('adminLogin').classList.remove('active');
+    document.getElementById('adminDash').classList.add('active');
+    document.getElementById('adminPass').value = '';
+    loadPending();
+  }else{
+    toast('Incorrect admin password.', 'err');
+  }
+}
+function adminLogout(){
+  document.getElementById('adminDash').classList.remove('active');
+  document.getElementById('adminLogin').classList.add('active');
+  const p = document.getElementById('adminPass'); if(p) p.value = '';
+}
+async function loadPending(){
+  const list = document.getElementById('pendingList');
+  list.innerHTML = '<div class="spinner"></div>';
+  showWaking();
+  try{
+    const res = await apiFetch(API.pending(), {});
+    if(!res.ok) throw new Error('Status ' + res.status);
+    let data = await res.json();
+    if(!Array.isArray(data)) data = (data && data.vendors) ? data.vendors : [];
+    renderPending(data);
+  }catch(err){
+    list.innerHTML = '<div class="empty-note">Could not load vendors right now (the server may be waking up).<br><br><button class="btn ghost sm" onclick="loadPending()">🔄 Try again</button></div>';
+  }finally{ clearWaking(); }
+}
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(m){ return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' })[m]; }); }
+function renderPending(vendors){
+  const list = document.getElementById('pendingList');
+  if(!vendors.length){ list.innerHTML = '<div class="empty-note">🎉 No pending applications. The directory is all caught up.</div>'; return; }
+  list.innerHTML = '';
+  vendors.forEach(function(v){
+    const id = v._id || v.id || v.phone;
+    const status = (v.status || 'pending').toLowerCase();
+    const row = document.createElement('div');
+    row.className = 'vrow';
+    row.innerHTML =
+      '<div class="top"><div><b>' + esc(v.name || 'Unnamed Vendor') + '</b><div class="cat">' + esc(v.category || '—') + '</div></div>' +
+      '<span class="status-pill ' + (status === 'approved' ? 'approved' : 'pending') + '">' + esc(status) + '</span></div>' +
+      '<div class="det">📞 ' + esc(v.phone || '—') + ' &nbsp;•&nbsp; 📍 ' + esc(v.address || '—') +
+      (v.experience ? ' &nbsp;•&nbsp; 🛠️ ' + esc(v.experience) + ' yrs' : '') +
+      (v.description ? '<br>📝 ' + esc(v.description) : '') + '</div>' +
+      '<div class="acts">' +
+        '<button class="btn ok sm" data-act="approve" data-id="' + esc(id) + '">✅ Approve</button>' +
+        '<button class="btn danger sm" data-act="reject" data-id="' + esc(id) + '">🗑️ Reject / Delete</button>' +
+      '</div>';
+    list.appendChild(row);
+  });
+  list.querySelectorAll('[data-act]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(btn.dataset.act === 'approve') approveVendor(btn.dataset.id, btn);
+      else rejectVendor(btn.dataset.id, btn);
+    });
+  });
+}
+async function approveVendor(id, btn){
+  btn.disabled = true; const old = btn.textContent; btn.textContent = 'Approving…';
+  showWaking();
+  try{
+    const res = await apiFetch(API.approve(id), { method:'PUT', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ status:'approved' }) });
+    if(!res.ok) throw new Error('Status ' + res.status);
+    toast('Vendor approved and added to the live directory.', 'ok');
+    loadPending();
+  }catch(err){ toast('Approval failed. Please try again.', 'err'); btn.disabled = false; btn.textContent = old; }
+  finally{ clearWaking(); }
+}
+async function rejectVendor(id, btn){
+  if(!confirm('Reject and permanently delete this vendor application?')) return;
+  btn.disabled = true; const old = btn.textContent; btn.textContent = 'Removing…';
+  showWaking();
+  try{
+    const res = await apiFetch(API.reject(id), { method:'DELETE' });
+    if(!res.ok) throw new Error('Status ' + res.status);
+    toast('Vendor application removed.', 'ok');
+    loadPending();
+  }catch(err){ toast('Removal failed. Please try again.', 'err'); btn.disabled = false; btn.textContent = old; }
+  finally{ clearWaking(); }
+}
 
-        async function submitSelfDelete() {
-            const payload = {
-                phone: document.getElementById('selfDeletePhone').value.trim(),
-                code: document.getElementById('selfDeleteCode').value.trim()
-            };
-            if(!payload.phone || !payload.code) { alert('دونوں خانے پر کریں!'); return; }
+/* ============================================================
+   MISC
+============================================================ */
+function initReveal(){
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold:.12 });
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+}
+document.getElementById('searchInput').addEventListener('keydown', function(e){ if(e.key === 'Enter') runSearch(); });
+document.querySelectorAll('#navLinks a').forEach(function(a){ a.addEventListener('click', function(){ document.getElementById('navLinks').classList.remove('open'); }); });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeVendorModal(); closeAdmin(); } });
 
-            try {
-                const res = await fetch(`${SERVER_URL}/api/vendors/self-delete`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                alert(data.success ? '✅ آپ کی پروفائل کامیابی سے ڈیلیٹ ہو گئی ہے!' : '❌ ' + data.message);
-                if(data.success) { closeModal('vendorSelfDeleteModal'); fetchVendorsFromServer(); }
-            } catch (err) { alert('Error!'); }
-        }
-
-        function showNearestProviders(categoryKey) {
-            const matches = allServerVendors.filter(v => v.category === categoryKey && v.status === 'approved');
-            const container = document.getElementById('providersList');
-            document.getElementById('providersTitle').textContent = `📍 Profiles Found`;
-
-            if (matches.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:30px; color:var(--text-secondary);">کوئی پروفائل دستیاب نہیں ہے!</p>';
-            } else {
-                container.innerHTML = matches.map(p => {
-                    const dist = calculateRealDistance(userLatitude, userLongitude, p.lat, p.lon);
-                    
-                    let metaInfoHtml = '';
-                    if (p.category.startsWith('ride-')) {
-                        metaInfoHtml = `
-                            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.2); padding:8px; border-radius:8px; margin:8px 0; font-size:12px; color:var(--accent);">
-                                ${p.targetCity ? `<b>➔ روٹ:</b> ایبٹ آباد سے ${p.targetCity}<br>` : ''}
-                                ${p.availDate ? `<b>📅 تاریخ:</b> ${p.availDate}<br>` : ''}
-                                ${p.availTime ? `<b>⏰ ٹائم:</b> ${p.availTime}` : ''}
-                            </div>`;
-                    }
-
-                    return `
-                        <div class="provider-card">
-                            <div style="display:flex; justify-content:space-between; align-items:start;">
-                                <div>
-                                    <h3 style="color:var(--primary); font-size:19px;">${p.name}</h3>
-                                    <div class="rating-stars">★★★★★</div>
-                                </div>
-                                <span class="distance-badge">📍 ${dist} km</span>
-                            </div>
-                            ${metaInfoHtml}
-                            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6; margin-top:5px;">
-                                <b>فون:</b> ${p.phone}<br><b>پتہ:</b> ${p.address}<br><b>تفصیل:</b> ${p.description || 'کوئی تفصیل نہیں'}
-                            </p>
-                            <button class="contact-btn" onclick="window.location.href='tel:${p.phone}'"><i class="fas fa-phone-alt"></i> رابطہ کریں</button>
-                        </div>`;
-                }).join('');
-            }
-            openModal('providers');
-        }
-
-        function verifyAdminLogin() {
-            if (document.getElementById('adminPassword').value === ADMIN_PASS_KEY) {
-                document.getElementById('adminLogin').style.display = 'none';
-                document.getElementById('adminDashboard').style.display = 'block';
-                renderAdminDashboardLists();
-            } else { alert('غلط پاس ورڈ!'); }
-        }
-
-        function renderAdminDashboardLists() {
-            const pending = allServerVendors.filter(v => v.status === 'pending');
-            const pContainer = document.getElementById('pendingVendorsList');
-            pContainer.innerHTML = pending.length === 0 ? '<p style="color:var(--text-secondary); font-size:12px;">کوئی نیا فارم نہیں ہے</p>' : pending.map(v => `
-                <div class="provider-card" style="padding:10px; border-color:var(--accent);">
-                    <h5 style="color:var(--accent);">${v.name} (${v.category})</h5>
-                    <div style="display:flex; gap:10px; margin-top:8px;">
-                        <button class="approve-btn" onclick="dispatchAdminAction(${v.id}, 'approve')">منظور کریں</button>
-                        <button class="reject-btn" onclick="dispatchAdminAction(${v.id}, 'reject')">مسترد</button>
-                    </div>
-                </div>`).join('');
-
-            const approved = allServerVendors.filter(v => v.status === 'approved');
-            const aContainer = document.getElementById('approvedVendorsManagementList');
-            aContainer.innerHTML = approved.length === 0 ? '<p style="color:var(--text-secondary); font-size:12px;">کوئی لائیو ممبر نہیں ہے</p>' : approved.map(v => `
-                <div class="provider-card" style="padding:12px; border-color:var(--success); display:flex; justify-content:between; align-items:center;">
-                    <div style="flex:1;">
-                        <span class="approved-badge">${v.category}</span>
-                        <h4 style="color:#fff; margin-top:5px;">${v.name}</h4>
-                        <small style="color:var(--text-secondary);">📞 ${v.phone} | 🔑 Code: ${v.deleteCode || 'N/A'}</small>
-                    </div>
-                    <button class="reject-btn" style="padding:6px 12px; font-size:11px;" onclick="dispatchAdminAction(${v.id}, 'delete')"><i class="fas fa-trash"></i> ہٹائیں</button>
-                </div>`).join('');
-        }
-
-        async function dispatchAdminAction(id, actionType) {
-            try {
-                await fetch(`${SERVER_URL}/api/vendors/action`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, action: actionType })
-                });
-                await fetchVendorsFromServer(); renderAdminDashboardLists();
-            } catch (err) { alert('Error!'); }
-        }
-
-        function filterCards() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('#mainServicesGrid .service-card').forEach(card => {
-                card.style.display = card.querySelector('.service-title').textContent.toLowerCase().includes(query) ? 'block' : 'none';
-            });
-        }
-
-        document.querySelectorAll('.modal').forEach(m => {
-            m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
-        });
-    </script>
+/* ============================================================
+   INIT
+============================================================ */
+document.getElementById('year').textContent = new Date().getFullYear();
+buildCategorySelect(document.getElementById('vCategory'), 'Select Service Category');
+renderCards();
+initReveal();
+initGPS();
+loadStats();
+buildDots();
+renderReview(0);
+restartRoll();
+</script>
 </body>
 </html>
 
